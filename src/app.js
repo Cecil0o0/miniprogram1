@@ -7,8 +7,11 @@ class App extends Component {
 
   config = {
     pages: [
+      'pages/info-photo-edit/index',
+      'pages/subscribe/index',
+      'pages/self-center/index',
       'pages/index/index',
-      'pages/info-edit/index'
+      'pages/search/index'
     ],
     window: {
       backgroundTextStyle: 'light',

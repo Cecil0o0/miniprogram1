@@ -1,9 +1,11 @@
 module.exports = {
   env: {
-    NODE_ENV: '"development"'
+    NODE_ENV: '"development"',
+    URL_PREFIX: '""'
   },
   defineConstants: {
   },
-  weapp: {},
+  weapp: {
+  },
   h5: {}
 }
