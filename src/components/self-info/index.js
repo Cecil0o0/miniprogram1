@@ -1,5 +1,6 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Image, Video } from '@tarojs/components'
+import './index.styl'
 
 export default class SelfInfo extends Component {
   defaultProps = {
@@ -26,7 +27,7 @@ export default class SelfInfo extends Component {
     }
   }
   render() {
-    const info = this.props.info
+    const info = this.props.info || this.defaultProps.info
     return (
       <View className="self-info">
         <View className="basic wrapper">

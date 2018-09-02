@@ -81,15 +81,27 @@ export default class Index extends Component {
     ]
   }
 
-  handleClick (index) {
+  handleClick(index) {
     this.setState({
       currTab: index
     })
   }
 
-  gotoSearch () {
+  gotoSearch() {
     Taro.navigateTo({
       url: '/pages/search/index'
+    })
+  }
+
+  clickModalCard() {
+    Taro.navigateTo({
+      url: '/pages/resume/index'
+    })
+  }
+
+  clickItemHandler() {
+    Taro.navigateTo({
+      url: '/pages/self-center/index'
     })
   }
 
@@ -120,7 +132,7 @@ export default class Index extends Component {
         >
           {this.state.swipers.map((item, key) => {
             return (
-              <SwiperItem key={key}>
+              <SwiperItem key={key} onClick={this.clickItemHandler.bind(this, item)}>
                 <View style={{ backgroundImage: `url("${item.src}")` }} />
               </SwiperItem>
             )
@@ -146,7 +158,9 @@ export default class Index extends Component {
         </View>
         <View className="model-cards-wrapper">
           {this.state.models.map((model, key) => {
-            return <ModelCard model={model} key={key} />
+            return (
+              <ModelCard model={model} key={key} onClick={this.clickModalCard.bind(this, model)} />
+            )
           })}
         </View>
         <Loadmore />

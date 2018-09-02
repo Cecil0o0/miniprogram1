@@ -23,6 +23,59 @@ export default class SelfCenter extends Component {
     }
   }
 
+  items = [
+    {
+      src: '',
+      url: '',
+      label: '关注的人'
+    },
+    {
+      src: '',
+      url: '/pages/info-basic-edit/index',
+      label: '基本资料'
+    },
+    {
+      src: '',
+      url: '/pages/info-photo-edit/index',
+      label: '上传海报'
+    },
+    {
+      src: '',
+      url: '/pages/info-photo-edit/index',
+      label: '上传相册'
+    },
+    {
+      src: '',
+      url: '/pages/info-video-edit/index',
+      label: '个人视频'
+    },
+    {
+      src: '',
+      url: '/pages/info-exp-edit/index',
+      label: '演艺经历'
+    },
+    {
+      src: '',
+      url: '/pages/subscribe/index',
+      label: '赞助我们'
+    },
+    {
+      src: '',
+      url: '/pages/card-edit-1/index',
+      label: '模卡制作'
+    },
+    {
+      src: '',
+      url: '/pages/id-verify/index',
+      label: '实名认证'
+    },
+    {
+      src: '',
+      url: '/pages/advice/index',
+      label: '投诉建议'
+    }
+  ]
+
   componentWillMount() {}
 
   componentDidMount() {}
@@ -33,12 +86,39 @@ export default class SelfCenter extends Component {
 
   componentDidHide() {}
 
+  clickAvatar(e) {
+    e.stopPropagation()
+    Taro.navigateTo({
+      url: '/pages/view-avatar/index'
+    })
+  }
+
+  clickCover() {
+    Taro.navigateTo({
+      url: '/pages/view-cover/index'
+    })
+  }
+
+  handlClick(item) {
+    Taro.navigateTo({
+      url: item.url
+    })
+  }
+
   render() {
     const { poster, avatar, name, popularity, subscribe, intro } = this.state.info
     return (
       <View className="self-center">
-        <View className="header" style={{ backgroundImage: `url("${poster}")` }}>
-          <View className="avatar" style={{ backgroundImage: `url("${avatar}")` }} />
+        <View
+          className="header"
+          style={{ backgroundImage: `url("${poster}")` }}
+          onClick={this.clickCover}
+        >
+          <View
+            className="avatar"
+            style={{ backgroundImage: `url("${avatar}")` }}
+            onClick={this.clickAvatar}
+          />
           <View className="first">
             <Text>{name}</Text>
             <Image className="female" src="" />
@@ -66,46 +146,15 @@ export default class SelfCenter extends Component {
           <View className="intro">{intro}</View>
         </View>
         <View className="body">
-          <View className="item">
-            <Image src="" />
-            <Text>关注的人</Text>
-          </View>
-          <View className="item">
-            <Image src="" />
-            <Text>基本资料</Text>
-          </View>
-          <View className="item">
-            <Image src="" />
-            <Text>上传海报</Text>
-          </View>
-          <View className="item">
-            <Image src="" />
-            <Text>上传相册</Text>
-          </View>
-          <View className="item">
-            <Image src="" />
-            <Text>个人视频</Text>
-          </View>
-          <View className="item">
-            <Image src="" />
-            <Text>演艺经历</Text>
-          </View>
-          <View className="item">
-            <Image src="" />
-            <Text>赞助我们</Text>
-          </View>
-          <View className="item">
-            <Image src="" />
-            <Text>制作模卡</Text>
-          </View>
-          <View className="item">
-            <Image src="" />
-            <Text>实名认证</Text>
-          </View>
-          <View className="item">
-            <Image src="" />
-            <Text>投诉建议</Text>
-          </View>
+          {this.items.map((item, index) => {
+            const { src, label } = item
+            return (
+              <View className="item" key={index} onClick={this.handlClick.bind(this, item)}>
+                <Image src={src} />
+                <Text>{label}</Text>
+              </View>
+            )
+          })}
         </View>
       </View>
     )

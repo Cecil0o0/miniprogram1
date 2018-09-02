@@ -7,6 +7,11 @@ class App extends Component {
 
   config = {
     pages: [
+      'pages/index/index',
+      'pages/advice/index',
+      'pages/card-edit-1/index',
+      'pages/id-verify/index',
+      'pages/info-exp-edit/index',
       'pages/resume/index',
       'pages/info-basic-edit/index',
       'pages/view-cover/index',
@@ -15,7 +20,6 @@ class App extends Component {
       'pages/info-photo-edit/index',
       'pages/subscribe/index',
       'pages/self-center/index',
-      'pages/index/index',
       'pages/search/index'
     ],
     window: {

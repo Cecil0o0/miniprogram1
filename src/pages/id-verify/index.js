@@ -2,7 +2,7 @@ import Taro, { Component } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import './index.styl'
 
-export default class Index extends Component {
+export default class IdVerify extends Component {
 
   config = {
     navigationBarTitleText: '实名认证'
@@ -20,8 +20,8 @@ export default class Index extends Component {
 
   render () {
     return (
-      <View className='index'>
-        <Text>Self Info</Text>
+      <View className='page-id-verify'>
+        <Text>实名认证</Text>
       </View>
     )
   }

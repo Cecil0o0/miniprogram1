@@ -1,11 +1,10 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Text } from '@tarojs/components'
-import './index.styl'
+import { View } from '@tarojs/components'
 
 export default class Index extends Component {
 
   config = {
-    navigationBarTitleText: '模卡信息填写'
+    navigationBarTitleText: '投诉建议'
   }
 
   componentWillMount () { }
@@ -21,9 +20,8 @@ export default class Index extends Component {
   render () {
     return (
       <View className='index'>
-        <Text>模卡信息填写</Text>
+        投诉建议
       </View>
     )
   }
 }
-
