@@ -1,9 +1,13 @@
 import fetch from '../lib/fetch'
 
-console.log(process.env.URL_PREFIX)
+/* eslint-disable-next-line */
+const prefix = URL_PREFIX
+const version = '/v1'
 
 export const home = {
-  getSwipers: fetch()
+  getSwipers: fetch({
+    url: `${prefix}${version}/home/swipers`
+  })
 }
 
 export const info = {}

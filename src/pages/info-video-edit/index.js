@@ -1,8 +1,8 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Text } from '@tarojs/components'
+import { View, Video } from '@tarojs/components'
 import './index.styl'
 
-export default class Index extends Component {
+export default class InfoVideoEdit extends Component {
 
   config = {
     navigationBarTitleText: '视频编辑'
@@ -18,10 +18,20 @@ export default class Index extends Component {
 
   componentDidHide () { }
 
+  upload () {
+    console.log('upload')
+  }
+
+  confirm () {
+    console.log('confirm')
+  }
+
   render () {
     return (
-      <View className='index'>
-        <Text>Self Info</Text>
+      <View className='video-edit'>
+        <Video></Video>
+        <View className="upload-btn" onClick={this.upload}>重新上传视频</View>
+        <View className="confirm-btn" onClick={this.confirm}>确定</View>
       </View>
     )
   }

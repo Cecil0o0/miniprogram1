@@ -2,7 +2,7 @@ import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
 import './index.styl'
 
-export default class Index extends Component {
+export default class SelfCenter extends Component {
   config = {
     navigationBarTitleText: '个人中心'
   }
@@ -17,7 +17,7 @@ export default class Index extends Component {
       idVerify: true,
       sex: 0,
       popularity: 1258,
-      sponsorValue: 225874,
+      subscribe: 225874,
       intro:
         '坚持不一定会胜利，放弃不一定是认输，人生有很多时候需要的不仅仅是执着，更是回眸一笑的洒脱，加油！'
     }
@@ -34,7 +34,7 @@ export default class Index extends Component {
   componentDidHide() {}
 
   render() {
-    const { poster, avatar, name, popularity, sponsorValue, intro } = this.state.info
+    const { poster, avatar, name, popularity, subscribe, intro } = this.state.info
     return (
       <View className="self-center">
         <View className="header" style={{ backgroundImage: `url("${poster}")` }}>
@@ -59,7 +59,7 @@ export default class Index extends Component {
               <Image className="money-bag" src="" />
               <Text>
                 赞助值：
-                {sponsorValue}
+                {subscribe}
               </Text>
             </View>
           </View>

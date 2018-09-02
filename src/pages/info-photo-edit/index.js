@@ -1,9 +1,9 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Icon } from '@tarojs/components'
+import { View } from '@tarojs/components'
 import update from 'immutability-helper'
 import './index.styl'
 
-export default class Index extends Component {
+export default class InfoPhotoEdit extends Component {
   config = {
     navigationBarTitleText: '相册编辑'
   }
