@@ -1,6 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Icon, Text } from '@tarojs/components'
+import { View, Image, Text } from '@tarojs/components'
 import './index.styl'
+import HeartPng from '../../images/个人中心_03.png'
 
 export default class ModelCard extends Component {
   handleClick(e) {
@@ -11,15 +12,21 @@ export default class ModelCard extends Component {
     return (
       <View className="model-card" onClick={this.handleClick}>
         <View className="popularity">
-          <Icon size="12" type="info" />
+          <Image src={HeartPng} />
           <Text>人气值：</Text>
           <Text>{popularity}</Text>
         </View>
         <View className="img" style={{ backgroundImage: `url(${imgSrc})` }} />
         <View className="info">
           <Text>{name}</Text>
-          <Text>{height}cm</Text>
-          <Text>{weight}kg</Text>
+          <Text>
+            {height}
+            cm
+          </Text>
+          <Text>
+            {weight}
+            kg
+          </Text>
         </View>
       </View>
     )

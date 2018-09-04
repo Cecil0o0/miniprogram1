@@ -1,6 +1,17 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Image, Video } from '@tarojs/components'
 import './index.styl'
+import PersonPng from '../../images/个人资料_35.png'
+import CakePng from '../../images/个人资料_39.png'
+import HeightPng from '../../images/个人资料_41.png'
+import WeightPng from '../../images/个人资料_44.png'
+import BWHPng from '../../images/个人资料_47.png'
+import LocationPng from '../../images/个人资料_54.png'
+import DegreePng from '../../images/个人资料_56.png'
+import JobPng from '../../images/个人资料_59.png'
+import CrownPng from '../../images/个人资料_63.png'
+import VideoPng from '../../images/个人资料_66.png'
+import ExpPng from '../../images/个人资料_68.png'
 
 export default class SelfInfo extends Component {
   defaultProps = {
@@ -32,54 +43,54 @@ export default class SelfInfo extends Component {
       <View className="self-info">
         <View className="basic wrapper">
           <View className="header">
-            <Image src="" className="person" />
+            <Image src={PersonPng} className="person" />
             基本信息
           </View>
           <View className="first">
             <View>
-              <Image src="" className="icon age" />
+              <Image src={CakePng} className="icon age" />
               <View>{info.age}岁</View>
             </View>
             <View>
-              <Image src="" className="icon height" />
+              <Image src={HeightPng} className="icon height" />
               <View>
                 {info.height}
                 cm
               </View>
             </View>
             <View>
-              <Image src="" className="icon weight" />
+              <Image src={WeightPng} className="icon weight" />
               <View>
                 {info.weight}
                 kg
               </View>
             </View>
             <View>
-              <Image src="" className="icon bwh" />
+              <Image src={BWHPng} className="icon bwh" />
               <View>{info.bwh.join('/')}</View>
             </View>
           </View>
           <View className="middle-line" />
           <View className="second">
             <View className="item">
-              <Image className="location" src="" />
+              <Image className="location" src={LocationPng} />
               {info.city}
             </View>
             <View className="divider-line" />
             <View className="item">
-              <Image className="degree" src="" />
+              <Image className="degree" src={DegreePng} />
               {info.school}
             </View>
             <View className="divider-line" />
             <View className="item">
-              <Image className="job" src="" />
+              <Image className="job" src={JobPng} />
               {info.exp}
             </View>
           </View>
         </View>
         <View className="specialities wrapper">
           <View className="header">
-            <Image src="" className="crown" />
+            <Image src={CrownPng} className="crown" />
             特长
           </View>
           <View className="inner-wrapper">
@@ -94,7 +105,7 @@ export default class SelfInfo extends Component {
         </View>
         <View className="video wrapper">
           <View className="header">
-            <Image src="" className="video-image" />
+            <Image src={VideoPng} className="video-image" />
             个人视频
           </View>
           <View className="inner-wrapper">
@@ -103,7 +114,7 @@ export default class SelfInfo extends Component {
         </View>
         <View className="exp wrapper">
           <View className="header">
-            <Image src="" className="crown" />
+            <Image src={ExpPng} className="crown" />
             演艺经历
           </View>
           <View className="inner-wrapper">

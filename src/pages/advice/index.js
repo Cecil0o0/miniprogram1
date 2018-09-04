@@ -1,7 +1,8 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View } from '@tarojs/components'
+import './index.styl'
 
-export default class Index extends Component {
+export default class Advice extends Component {
 
   config = {
     navigationBarTitleText: '投诉建议'
@@ -19,7 +20,7 @@ export default class Index extends Component {
 
   render () {
     return (
-      <View className='index'>
+      <View className='page-advice'>
         投诉建议
       </View>
     )

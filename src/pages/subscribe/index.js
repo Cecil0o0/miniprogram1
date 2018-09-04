@@ -1,6 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import './index.styl'
+import SubscribePng from '../../images/赞助我们_03.png'
 
 export default class Index extends Component {
   config = {
@@ -45,7 +46,7 @@ export default class Index extends Component {
       <View className="subscribe">
         {this.state.tickets.map((item, key) => {
           return (
-            <View key={key} className="ticket">
+            <View key={key} className="ticket" style={{backgroundImage: `url("${SubscribePng}")`}}>
               <View className="left">
                 <Text>{item.price}</Text>
                 {item.months > 1 ? (

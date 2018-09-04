@@ -1,6 +1,22 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
 import './index.styl'
+import AttentionPng from '../../images/attention.png'
+import BasicInfoPng from '../../images/个人中心_12.png'
+import PosterPng from '../../images/个人中心_14.png'
+import PicturesPng from '../../images/个人中心_19.png'
+import VideoPng from '../../images/个人中心_20.png'
+import ExpPng from '../../images/个人中心_21.png'
+import SubscribePng from '../../images/个人中心_25.png'
+import CardMadePng from '../../images/个人中心_26.png'
+import IdVerifyPng from '../../images/个人中心_27.png'
+import AdvicePng from '../../images/个人中心_31.png'
+import FemalePng from '../../images/个人资料_03.png'
+import MalePng from '../../images/个人资料_05.png'
+import IdVerify2Png from '../../images/个人资料_08.png'
+import HeartPng from '../../images/个人中心_03.png'
+import MoneyBagPng from '../../images/个人中心_05.png'
+
 
 export default class SelfCenter extends Component {
   config = {
@@ -25,52 +41,52 @@ export default class SelfCenter extends Component {
 
   items = [
     {
-      src: '',
-      url: '',
+      src: AttentionPng,
+      url: '/pages/attention/index',
       label: '关注的人'
     },
     {
-      src: '',
+      src: BasicInfoPng,
       url: '/pages/info-basic-edit/index',
       label: '基本资料'
     },
     {
-      src: '',
+      src: PosterPng,
       url: '/pages/info-photo-edit/index',
       label: '上传海报'
     },
     {
-      src: '',
+      src: PicturesPng,
       url: '/pages/info-photo-edit/index',
       label: '上传相册'
     },
     {
-      src: '',
+      src: VideoPng,
       url: '/pages/info-video-edit/index',
       label: '个人视频'
     },
     {
-      src: '',
+      src: ExpPng,
       url: '/pages/info-exp-edit/index',
       label: '演艺经历'
     },
     {
-      src: '',
+      src: SubscribePng,
       url: '/pages/subscribe/index',
       label: '赞助我们'
     },
     {
-      src: '',
+      src: CardMadePng,
       url: '/pages/card-edit-1/index',
       label: '模卡制作'
     },
     {
-      src: '',
+      src: IdVerifyPng,
       url: '/pages/id-verify/index',
       label: '实名认证'
     },
     {
-      src: '',
+      src: AdvicePng,
       url: '/pages/advice/index',
       label: '投诉建议'
     }
@@ -121,14 +137,14 @@ export default class SelfCenter extends Component {
           />
           <View className="first">
             <Text>{name}</Text>
-            <Image className="female" src="" />
+            <Image className="sex" src={FemalePng} />
             <View className="idVerify">
-              <Image src="" /> 实名认证
+              <Image src={IdVerify2Png} /> 实名认证
             </View>
           </View>
           <View className="second">
             <View className="popularity">
-              <Image className="heart" src="" />
+              <Image className="heart" src={HeartPng} />
               <Text>
                 人气值：
                 {popularity}
@@ -136,7 +152,7 @@ export default class SelfCenter extends Component {
             </View>
             <View className="divider" />
             <View className="sponsor-value">
-              <Image className="money-bag" src="" />
+              <Image className="money-bag" src={MoneyBagPng} />
               <Text>
                 赞助值：
                 {subscribe}

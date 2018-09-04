@@ -9,6 +9,7 @@ class App extends Component {
     pages: [
       'pages/index/index',
       'pages/advice/index',
+      'pages/attention/index',
       'pages/card-edit-1/index',
       'pages/id-verify/index',
       'pages/info-exp-edit/index',
@@ -25,7 +26,7 @@ class App extends Component {
     window: {
       backgroundTextStyle: 'light',
       navigationBarBackgroundColor: '#fff',
-      navigationBarTitleText: 'WeChat',
+      navigationBarTitleText: '芃叔小简历',
       navigationBarTextStyle: 'black'
     }
   }

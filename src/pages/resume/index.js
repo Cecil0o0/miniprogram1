@@ -4,6 +4,13 @@ import cn from 'classnames'
 import Loadmore from '../../components/loadmore'
 import SelfInfo from '../../components/self-info'
 import './index.styl'
+import HeartPng from '../../images/个人中心_03.png'
+import MoneyBagPng from '../../images/个人中心_05.png'
+import PlusPng from '../../images/个人资料_16.png'
+import EmailPng from '../../images/个人资料_18.png'
+import FemalePng from '../../images/个人资料_03.png'
+import MalePng from '../../images/个人资料_05.png'
+import IdVerify2Png from '../../images/个人资料_08.png'
 
 export default class Resume extends Component {
   constructor(props) {
@@ -119,21 +126,21 @@ export default class Resume extends Component {
           <View className="info1">
             <View className="first">
               <View className="name">{info.name}</View>
-              <View className="sex" />
+              <Image className="sex" src={FemalePng} />
               <View className="id-wrapper">
-                <Image src="" className="id-verify-icon" />
+                <Image src={IdVerify2Png} className="id-verify-icon" />
                 <Text className="verify-text">实名认证</Text>
               </View>
             </View>
             <View className="second">
               <View className="btn-group">
                 <View className="btn">
-                  <Image src="" className="add icon" />
+                  <Image src={PlusPng} className="add icon" />
                   <Text>关注</Text>
                 </View>
                 <View className="divider-vertical" />
                 <View className="btn">
-                  <Image src="" className="email icon" />
+                  <Image src={EmailPng} className="email icon" />
                   <Text>私信</Text>
                 </View>
               </View>
@@ -142,7 +149,7 @@ export default class Resume extends Component {
           <View className="divider-horizontal" />
           <View className="info2">
             <View className="popularity">
-              <Image src="" className="heart icon" />
+              <Image src={HeartPng} className="heart icon" />
               <View>
                 人气值：
                 {info.popularity}
@@ -150,7 +157,7 @@ export default class Resume extends Component {
             </View>
             <View className="divider-vertical" />
             <View className="subscribe">
-              <Image src="" className="money-bag icon" />
+              <Image src={MoneyBagPng} className="money-bag icon" />
               <View>
                 赞助值：
                 {info.subscribe}

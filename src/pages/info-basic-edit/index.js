@@ -3,6 +3,7 @@ import { View, Input } from '@tarojs/components'
 import cn from 'classnames'
 import QfModal from '../../components/modal'
 import './index.styl'
+import CaretRightPng from '../../images/个人资料_105.png'
 
 export default class InfoBasicEdit extends Component {
   constructor(props) {
@@ -99,6 +100,9 @@ export default class InfoBasicEdit extends Component {
   render() {
     const { info, label, inputPlaceholder } = this.state
     const keys = Object.keys(info)
+    const caretStyle = {
+      backgroundImage: `url("${CaretRightPng}")`
+    }
     return (
       <View className="info-basic-edit">
         {keys.map((key, index) => {
@@ -116,7 +120,7 @@ export default class InfoBasicEdit extends Component {
               >
                 <View className="form-item-label">{l}</View>
                 <View className="form-item-info">{i}</View>
-                <View className="form-item-suffix" />
+                <View className="form-item-suffix" style={caretStyle} />
               </View>
               {['weight', 'city'].indexOf(key) !== -1 && <View className="divider" />}
             </block>

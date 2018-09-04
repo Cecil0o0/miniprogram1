@@ -4,6 +4,7 @@ import cn from 'classnames'
 import './index.styl'
 import ModelCard from '../../components/model-card/index'
 import Loadmore from '../../components/loadmore/index'
+import Banner1 from '../../images/banner1.png'
 
 export default class Index extends Component {
   config = {
@@ -13,21 +14,21 @@ export default class Index extends Component {
   state = {
     swipers: [
       {
-        src: 'http://t2.hddhhn.com/uploads/tu/201610/198/hkgip2b102z.jpg',
+        src: Banner1,
         jump: {
           type: 'web',
           url: ''
         }
       },
       {
-        src: 'http://t2.hddhhn.com/uploads/tu/201610/198/hkgip2b102z.jpg',
+        src: Banner1,
         jump: {
           type: 'web',
           url: ''
         }
       },
       {
-        src: 'http://t2.hddhhn.com/uploads/tu/201610/198/hkgip2b102z.jpg',
+        src: Banner1,
         jump: {
           type: 'web',
           url: ''

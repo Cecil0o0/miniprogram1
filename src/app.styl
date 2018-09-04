@@ -1,61 +1,6 @@
+@import './styles/qf.styl'
 image
   width 50px
   height 50px
 view
   box-sizing border-box
-view.button
-  width 100%
-  height 86px
-  line-height 86px
-  border-radius 4px
-  font-size 30px
-  font-weight normal
-  text-align center
-.tabs
-  display flex
-  view
-    flex 1
-    text-align center
-    margin 31px 0
-    font-size 34px
-    text
-      color #000
-      line-height 33px
-      position relative
-    text:after
-      content ''
-      display block
-      position absolute
-      bottom -10px
-      width 70%
-      left 50%
-      transform translateX(-50%)
-      height 6px
-      border-radius 2px
-      background-color #D2D2D2
-  view.active
-    text:after
-      background-color #499FFF
-.form-item
-  min-height 89px
-  padding 0 5px
-  display flex
-  align-items center
-  border-bottom 1px solid #EEEEEE
-  margin 0 30px
-  &-label
-    width 140px
-    margin-right 20px
-    color #575757
-    font-size 30px
-  &-info
-    flex 1
-    font-size 30px
-    color #0A0A0A
-    margin-right 44px
-  &-suffix
-    width 11px
-    height 20px
-    background-color #A3A3A3
-.form-item.no-border
-  border-bottom none
