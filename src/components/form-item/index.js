@@ -1,7 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import cn from 'classnames'
-import CaretRightPng from '../../images/个人资料_105.png'
+import CaretRightPng from '../../images/caret_right.png'
 
 export default class FormItem extends Component {
   render() {

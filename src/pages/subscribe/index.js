@@ -1,7 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import './index.styl'
-import SubscribePng from '../../images/赞助我们_03.png'
+import SubscribePng from '../../images/subscribe_ticket.png'
 
 export default class Index extends Component {
   config = {

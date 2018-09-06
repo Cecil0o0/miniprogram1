@@ -4,13 +4,18 @@ import cn from 'classnames'
 import Loadmore from '../../components/loadmore'
 import SelfInfo from '../../components/self-info'
 import './index.styl'
-import HeartPng from '../../images/个人中心_03.png'
-import MoneyBagPng from '../../images/个人中心_05.png'
-import PlusPng from '../../images/个人资料_16.png'
-import EmailPng from '../../images/个人资料_18.png'
-import FemalePng from '../../images/个人资料_03.png'
-import MalePng from '../../images/个人资料_05.png'
-import IdVerify2Png from '../../images/个人资料_08.png'
+import HeartPng from '../../images/heart.png'
+import MoneyBagPng from '../../images/money_bag.png'
+import PlusPng from '../../images/white_plus.png'
+import EmailPng from '../../images/white_email.png'
+import FemalePng from '../../images/female.png'
+import MalePng from '../../images/male.png'
+import IdVerify2Png from '../../images/verify_icon.png'
+import VoicePng from '../../images/voice.png'
+import RectPng from '../../images/rect.png'
+import ChatPng from '../../images/chat.png'
+import BluePersonPng from '../../images/blue_person.png'
+import MenuPng from '../../images/menu.png'
 
 export default class Resume extends Component {
   constructor(props) {
@@ -202,6 +207,13 @@ export default class Resume extends Component {
             <Loadmore />
           </View>
         )}
+        <View className="menu">
+          <Image src={VoicePng} />
+          <Image src={RectPng} />
+          <Image src={ChatPng} />
+          <Image src={BluePersonPng} />
+          <Image src={MenuPng} />
+        </View>
       </View>
     )
   }

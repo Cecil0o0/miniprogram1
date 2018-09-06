@@ -1,7 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Picker, Textarea } from '@tarojs/components'
+import { View, Picker, Textarea, Image } from '@tarojs/components'
 import './index.styl'
-import CaretRightPng from '../../images/个人资料_105.png'
+import CaretRightPng from '../../images/caret_right.png'
 
 export default class ExpEdit extends Component {
   constructor() {
@@ -59,9 +59,6 @@ export default class ExpEdit extends Component {
 
   render() {
     const { experiences } = this.state
-    const caretStyle = {
-      backgroundImage: `url("${CaretRightPng}")`
-    }
     return (
       <View className="page-exp-edit">
         {experiences.map((item, idx) => {
@@ -72,33 +69,33 @@ export default class ExpEdit extends Component {
                 <View className="form-item year">
                   <View className="form-item-label">{year}年</View>
                   <View className="form-item-info">选择年份</View>
-                  <View className="form-item-suffix" style={caretStyle} />
+                  <View className="form-item-suffix"><Image src={CaretRightPng}></Image></View>
                 </View>
               </Picker>
               <View className="form-item" onClick={this.onClickFormItem.bind(this, item)}>
                 <View className="form-item-label">影片名称</View>
                 <View className="form-item-info">{name}</View>
-                <View className="form-item-suffix" style={caretStyle} />
+                <View className="form-item-suffix"><Image src={CaretRightPng}></Image></View>
               </View>
               <View className="form-item" onClick={this.onClickFormItem.bind(this, item)}>
                 <View className="form-item-label">类型</View>
                 <View className="form-item-info">{type}</View>
-                <View className="form-item-suffix" style={caretStyle} />
+                <View className="form-item-suffix"><Image src={CaretRightPng}></Image></View>
               </View>
               <View className="form-item" onClick={this.onClickFormItem.bind(this, item)}>
                 <View className="form-item-label">导演</View>
                 <View className="form-item-info">{director}</View>
-                <View className="form-item-suffix" style={caretStyle} />
+                <View className="form-item-suffix"><Image src={CaretRightPng}></Image></View>
               </View>
               <View className="form-item" onClick={this.onClickFormItem.bind(this, item)}>
                 <View className="form-item-label">饰演角色</View>
                 <View className="form-item-info">{character}</View>
-                <View className="form-item-suffix" style={caretStyle} />
+                <View className="form-item-suffix"><Image src={CaretRightPng}></Image></View>
               </View>
               <View className="form-item" onClick={this.onClickFormItem.bind(this, item)}>
                 <View className="form-item-label">合作演员</View>
                 <View className="form-item-info">{coActor.join(' ')}</View>
-                <View className="form-item-suffix" style={caretStyle} />
+                <View className="form-item-suffix"><Image src={CaretRightPng}></Image></View>
               </View>
             </View>
           )

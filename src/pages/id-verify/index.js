@@ -1,7 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View } from '@tarojs/components'
+import { View, Image } from '@tarojs/components'
 import './index.styl'
-import FormItem from '../../components/form-item'
+import CaretRightPng from '../../images/caret_right.png'
 
 export default class IdVerify extends Component {
   state = {
@@ -27,7 +27,7 @@ export default class IdVerify extends Component {
 
   componentDidHide() {}
 
-  handleClick(name) {
+  onClickFormItem(name) {
     console.log(name)
   }
 
@@ -36,14 +36,30 @@ export default class IdVerify extends Component {
     return (
       <View className="page-id-verify">
         <View>
-          <FormItem name="name" label="真实姓名" value={info.name} onClick={this.handleClick} />
-          <FormItem name="mobile" label="手机号码" value={info.mobile} onClick={this.handleClick} />
-          <FormItem
-            name="idNumber"
-            label="身份证号"
-            value={info.idNumber}
-            onClick={this.handleClick}
-          />
+          <View
+            className='form-item'
+            onClick={this.onClickFormItem.bind(this, 'name')}
+          >
+            <View className="form-item-label">真实姓名</View>
+            <View className="form-item-info">{info.name}</View>
+            <View className="form-item-suffix"><Image src={CaretRightPng}></Image></View>
+          </View>
+          <View
+            className='form-item'
+            onClick={this.onClickFormItem.bind(this, 'mobile')}
+          >
+            <View className="form-item-label">手机号码</View>
+            <View className="form-item-info">{info.mobile}</View>
+            <View className="form-item-suffix"><Image src={CaretRightPng}></Image></View>
+          </View>
+          <View
+            className='form-item'
+            onClick={this.onClickFormItem.bind(this, 'idNumber')}
+          >
+            <View className="form-item-label">身份证号</View>
+            <View className="form-item-info">{info.idNumber}</View>
+            <View className="form-item-suffix"><Image src={CaretRightPng}></Image></View>
+          </View>
         </View>
         <View className="uploader-wrapper">
           <View className="label">上传身份证</View>
