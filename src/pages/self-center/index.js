@@ -16,6 +16,10 @@ import MalePng from '../../images/male.png'
 import IdVerify2Png from '../../images/verify_icon.png'
 import HeartPng from '../../images/heart.png'
 import MoneyBagPng from '../../images/money_bag.png'
+import MobilePng from '../../images/self_center_mobile.png'
+import TicketPng from '../../images/self_center_ticket.png'
+import MobileWhitePng from '../../images/self_center_mobile_white.png'
+import VerifyWhitePng from '../../images/self_center_verify_white.png'
 
 
 export default class SelfCenter extends Component {
@@ -86,6 +90,16 @@ export default class SelfCenter extends Component {
       label: '实名认证'
     },
     {
+      src: MobilePng,
+      url: '/pages/bind-mobile/index',
+      label: '绑定手机'
+    },
+    {
+      src: TicketPng,
+      url: '/pages/cash/index',
+      label: '提现'
+    },
+    {
       src: AdvicePng,
       url: '/pages/advice/index',
       label: '投诉建议'
@@ -138,8 +152,16 @@ export default class SelfCenter extends Component {
           <View className="first">
             <Text>{name}</Text>
             <Image className="sex" src={FemalePng} />
-            <View className="idVerify">
-              <Image src={IdVerify2Png} /> 实名认证
+          </View>
+          <View className="btn-group">
+            <View className="btn">
+              <Image src={VerifyWhitePng} className="icon" />
+              <Text>实名认证</Text>
+            </View>
+            <View className="divider-vertical" />
+            <View className="btn">
+              <Image src={MobileWhitePng} className="icon" />
+              <Text>138****6688</Text>
             </View>
           </View>
           <View className="second">

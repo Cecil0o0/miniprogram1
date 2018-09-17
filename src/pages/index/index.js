@@ -11,7 +11,8 @@ import Model4Png from '../../images/model4.jpeg'
 
 export default class Index extends Component {
   config = {
-    navigationBarTitleText: '首页'
+    navigationBarTitleText: '首页',
+    enablePullDownRefresh: true
   }
 
   state = {
@@ -84,13 +85,13 @@ export default class Index extends Component {
   }
 
   clickModalCard() {
-    Taro.navigateTo({
+    Taro.switchTab({
       url: '/pages/resume/index'
     })
   }
 
   clickItemHandler() {
-    Taro.navigateTo({
+    Taro.switchTab({
       url: '/pages/self-center/index'
     })
   }

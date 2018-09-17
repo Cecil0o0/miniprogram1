@@ -2,7 +2,7 @@ import Taro, { Component } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import './index.styl'
 
-export default class Index extends Component {
+export default class CardEdit23 extends Component {
 
   config = {
     navigationBarTitleText: '模卡制作'
@@ -20,8 +20,8 @@ export default class Index extends Component {
 
   render () {
     return (
-      <View className='index'>
-        <Text>Self Info</Text>
+      <View className='page-edit-2-3'>
+        <Text>模块三选图</Text>
       </View>
     )
   }

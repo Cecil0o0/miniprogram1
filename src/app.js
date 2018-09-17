@@ -11,11 +11,16 @@ class App extends Component {
       'pages/advice/index',
       'pages/attention/index',
       'pages/card-edit-1/index',
+      'pages/card-edit-2-1/index',
+      'pages/card-edit-2-2/index',
+      'pages/card-edit-2-3/index',
       'pages/id-verify/index',
       'pages/info-exp-edit/index',
       'pages/resume/index',
+      'pages/bind-mobile/index',
       'pages/info-basic-edit/index',
       'pages/view-cover/index',
+      'pages/cash/index',
       'pages/view-avatar/index',
       'pages/info-video-edit/index',
       'pages/info-photo-edit/index',
@@ -28,6 +33,33 @@ class App extends Component {
       navigationBarBackgroundColor: '#fff',
       navigationBarTitleText: '芃叔小简历',
       navigationBarTextStyle: 'black'
+    },
+    tabBar: {
+      list: [
+        {
+          pagePath: 'pages/index/index',
+          text: '首页',
+          iconPath: './images/home_home.png',
+          selectedIconPath: './images/home_home_active.png'
+        },
+        {
+          pagePath: 'pages/resume/index',
+          text: '个人主页',
+          iconPath: './images/home_resume.png',
+          selectedIconPath: './images/home_resume_active.png'
+        },
+        {
+          pagePath: 'pages/self-center/index',
+          text: '个人中心',
+          iconPath: './images/home_person.png',
+          selectedIconPath: './images/home_person_active.png'
+        }
+      ],
+      color: '#BDC0C5',
+      selectedColor: '#000',
+      backgroundColor: '#fff',
+      borderStyle: 'black',
+      position: 'bottom'
     }
   }
 
