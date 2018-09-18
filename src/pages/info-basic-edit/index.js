@@ -5,7 +5,7 @@ import './index.styl'
 import CaretRightPng from '../../images/caret_right.png'
 
 const ages = []
-for(let i = 10; i <= 60; i++) {
+for (let i = 10; i <= 60; i++) {
   ages.push(i)
 }
 const heights = []
@@ -92,7 +92,7 @@ export default class InfoBasicEdit extends Component {
     if (this.state.inputName === 'specialities') {
       try {
         value = this.state.inputValue.split(' ')
-      } catch(e) {
+      } catch (e) {
         console.log(e)
       }
     }
@@ -131,34 +131,34 @@ export default class InfoBasicEdit extends Component {
     return i
   }
 
-  setInfo (key, value) {
+  setInfo(key, value) {
     return Object.assign({}, this.state.info, {
       [key]: value
     })
   }
 
-  onAgeChange (e) {
+  onAgeChange(e) {
     const index = e.detail.value
     this.setState({
       info: this.setInfo('age', ages[index])
     })
   }
 
-  onHeightChange (e) {
+  onHeightChange(e) {
     const index = e.detail.value
     this.setState({
       info: this.setInfo('height', heights[index])
     })
   }
 
-  onWeightChange (e) {
+  onWeightChange(e) {
     const index = e.detail.value
     this.setState({
       info: this.setInfo('weight', weights[index])
     })
   }
 
-  onBWHChange (e) {
+  onBWHChange(e) {
     const indexArr = e.detail.value
     const val = indexArr.map((item, index) => {
       return bwhs[index][item]
@@ -168,7 +168,7 @@ export default class InfoBasicEdit extends Component {
     })
   }
 
-  onCityChange (e) {
+  onCityChange(e) {
     this.setState({
       info: this.setInfo('city', e.detail.value)
     })
@@ -193,64 +193,86 @@ export default class InfoBasicEdit extends Component {
         <View className="form-item" onClick={this.onClickFormItem.bind(this, 'name')}>
           <View className="form-item-label">姓名</View>
           <View className="form-item-info">{this.dataTrans('name', info['name'])}</View>
-          <View className="form-item-suffix"><Image src={CaretRightPng}></Image></View>
+          <View className="form-item-suffix">
+            <Image src={CaretRightPng} />
+          </View>
         </View>
         <Picker range={ages} value={age_value} onChange={this.onAgeChange}>
           <View className="form-item">
             <View className="form-item-label">年龄</View>
             <View className="form-item-info">{this.dataTrans('age', info['age'])}</View>
-            <View className="form-item-suffix"><Image src={CaretRightPng}></Image></View>
+            <View className="form-item-suffix">
+              <Image src={CaretRightPng} />
+            </View>
           </View>
         </Picker>
         <Picker range={heights} onChange={this.onHeightChange} value={height_value}>
           <View className="form-item">
             <View className="form-item-label">身高</View>
             <View className="form-item-info">{this.dataTrans('height', info['height'])}</View>
-            <View className="form-item-suffix"><Image src={CaretRightPng}></Image></View>
+            <View className="form-item-suffix">
+              <Image src={CaretRightPng} />
+            </View>
           </View>
         </Picker>
         <Picker range={weights} onChange={this.onWeightChange} value={weight_value}>
           <View className="form-item">
             <View className="form-item-label">体重</View>
             <View className="form-item-info">{this.dataTrans('weight', info['weight'])}</View>
-            <View className="form-item-suffix"><Image src={CaretRightPng}></Image></View>
+            <View className="form-item-suffix">
+              <Image src={CaretRightPng} />
+            </View>
           </View>
         </Picker>
         <Picker mode="multiSelector" range={bwhs} onChange={this.onBWHChange} value={bwh_value}>
           <View className="form-item">
             <View className="form-item-label">三围</View>
             <View className="form-item-info">{this.dataTrans('bwh', info['bwh'])}</View>
-            <View className="form-item-suffix"><Image src={CaretRightPng}></Image></View>
+            <View className="form-item-suffix">
+              <Image src={CaretRightPng} />
+            </View>
           </View>
         </Picker>
         <Picker mode="region" onChange={this.onCityChange} value={0} custom-item="无">
           <View className="form-item">
             <View className="form-item-label">所在地</View>
             <View className="form-item-info">{this.dataTrans('city', info['city'])}</View>
-            <View className="form-item-suffix"><Image src={CaretRightPng}></Image></View>
+            <View className="form-item-suffix">
+              <Image src={CaretRightPng} />
+            </View>
           </View>
         </Picker>
         <View className="form-item" onClick={this.onClickFormItem.bind(this, 'school')}>
           <View className="form-item-label">院校</View>
           <View className="form-item-info">{this.dataTrans('school', info['school'])}</View>
-          <View className="form-item-suffix"><Image src={CaretRightPng}></Image></View>
+          <View className="form-item-suffix">
+            <Image src={CaretRightPng} />
+          </View>
         </View>
         <View className="form-item" onClick={this.onClickFormItem.bind(this, 'exp')}>
           <View className="form-item-label">经验</View>
           <View className="form-item-info">{this.dataTrans('exp', info['exp'])}</View>
-          <View className="form-item-suffix"><Image src={CaretRightPng}></Image></View>
+          <View className="form-item-suffix">
+            <Image src={CaretRightPng} />
+          </View>
         </View>
         <View className="form-item" onClick={this.onClickFormItem.bind(this, 'specialities')}>
           <View className="form-item-label">特长</View>
           <View className="form-item-info">{this.dataTrans('specialities', info['specialities'])}</View>
-          <View className="form-item-suffix"><Image src={CaretRightPng}></Image></View>
+          <View className="form-item-suffix">
+            <Image src={CaretRightPng} />
+          </View>
         </View>
         <View className="form-item flex-start">
           <View className="form-item-label">介绍</View>
           <View className="form-item-info">
-            <Textarea className="form-item-info-textarea" value={this.dataTrans('intro', info['intro'])} />
+            <Textarea
+              className="form-item-info-textarea"
+              value={this.dataTrans('intro', info['intro'])}
+              style={{ position: 'unset' }}
+            />
           </View>
-          <View className="form-item-suffix"><Image src={CaretRightPng}></Image></View>
+          <View className="form-item-suffix" />
         </View>
         <View className="btn-group">
           <View onClick={this.confirm} className="confirm button">

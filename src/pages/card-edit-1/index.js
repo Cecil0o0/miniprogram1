@@ -19,29 +19,157 @@ export default class CardEdit1 extends Component {
 
   componentDidHide () { }
 
-  onClickFormItem(index) {
-    Taro.navigateTo({
-      url: `/pages/card-edit-2-${index}/index`
+  onClickFormItem() {
+    Taro.chooseImage({
+      count: 6,
+      sizeType: ['original', 'compressed'],
+      sourceType: ['album', 'camera'],
+      success (res) {
+        // tempFilePath可以作为img标签的src属性显示图片
+        const tempFilePaths = res.tempFilePaths
+        console.log(tempFilePaths)
+        Taro.setStorageSync('1$card-edit-photos', tempFilePaths)
+        Taro.navigateTo({
+          url: `/pages/card-edit-2/index`
+        })
+      },
+      fail (e) {
+        console.log(e)
+      }
     })
   }
 
   render () {
     return (
       <View className='page-card-edit-1'>
-        <View className="form-item" onClick={this.onClickFormItem.bind(this, 1)}>
-          <View className="form-item-label">模卡一</View>
-          <View className="form-item-info"></View>
-          <View className="form-item-suffix"><Image src={CaretRightPng} /></View>
+        <View className="demo-wrapper" onClick={this.onClickFormItem.bind(this, 1)}>
+          <View className="label">模卡一</View>
+          <View className="demo1">
+            <View className="basic-info">
+              <View className="name">某某某</View>
+              <View className="content">
+                <View className="label">身高|HEIGHT</View>
+                <View className="value">167cm</View>
+                <View className="label">体重|WEIGHT</View>
+                <View className="value">45kg</View>
+                <View className="label">胸围|BUST</View>
+                <View className="value">88</View>
+                <View className="label">腰围|WAIST</View>
+                <View className="value">88</View>
+                <View className="label">臀围|HIPS</View>
+                <View className="value">88</View>
+                <View className="label">鞋码|SHOES</View>
+                <View className="value">34</View>
+              </View>
+              <View className="qrcode">二维码</View>
+            </View>
+            <View className="imgs-wrapper">
+              <View className="img1">
+                <Image src="" />
+              </View>
+              <View className="img2">
+                <Image src="" />
+              </View>
+              <View className="img3">
+                <Image src="" />
+              </View>
+              <View className="img4">
+                <Image src="" />
+              </View>
+              <View className="img5">
+                <Image src="" />
+              </View>
+              <View className="img6">
+                <Image src="" />
+              </View>
+            </View>
+          </View>
         </View>
-        <View className="form-item" onClick={this.onClickFormItem.bind(this, 2)}>
-          <View className="form-item-label">模卡二</View>
-          <View className="form-item-info"></View>
-          <View className="form-item-suffix"><Image src={CaretRightPng} /></View>
+        <View className="demo-wrapper" onClick={this.onClickFormItem.bind(this, 1)}>
+          <View className="label">模卡二</View>
+          <View className="demo1">
+            <View className="basic-info">
+              <View className="name">某某某</View>
+              <View className="content">
+                <View className="label">身高|HEIGHT</View>
+                <View className="value">167cm</View>
+                <View className="label">体重|WEIGHT</View>
+                <View className="value">45kg</View>
+                <View className="label">胸围|BUST</View>
+                <View className="value">88</View>
+                <View className="label">腰围|WAIST</View>
+                <View className="value">88</View>
+                <View className="label">臀围|HIPS</View>
+                <View className="value">88</View>
+                <View className="label">鞋码|SHOES</View>
+                <View className="value">34</View>
+              </View>
+              <View className="qrcode">二维码</View>
+            </View>
+            <View className="imgs-wrapper">
+              <View className="img1">
+                <Image src="" />
+              </View>
+              <View className="img2">
+                <Image src="" />
+              </View>
+              <View className="img3">
+                <Image src="" />
+              </View>
+              <View className="img4">
+                <Image src="" />
+              </View>
+              <View className="img5">
+                <Image src="" />
+              </View>
+              <View className="img6">
+                <Image src="" />
+              </View>
+            </View>
+          </View>
         </View>
-        <View className="form-item" onClick={this.onClickFormItem.bind(this, 3)}>
-          <View className="form-item-label">模卡三</View>
-          <View className="form-item-info"></View>
-          <View className="form-item-suffix"><Image src={CaretRightPng} /></View>
+        <View className="demo-wrapper" onClick={this.onClickFormItem.bind(this, 1)}>
+          <View className="label">模卡三</View>
+          <View className="demo1">
+            <View className="basic-info">
+              <View className="name">某某某</View>
+              <View className="content">
+                <View className="label">身高|HEIGHT</View>
+                <View className="value">167cm</View>
+                <View className="label">体重|WEIGHT</View>
+                <View className="value">45kg</View>
+                <View className="label">胸围|BUST</View>
+                <View className="value">88</View>
+                <View className="label">腰围|WAIST</View>
+                <View className="value">88</View>
+                <View className="label">臀围|HIPS</View>
+                <View className="value">88</View>
+                <View className="label">鞋码|SHOES</View>
+                <View className="value">34</View>
+              </View>
+              <View className="qrcode">二维码</View>
+            </View>
+            <View className="imgs-wrapper">
+              <View className="img1">
+                <Image src="" />
+              </View>
+              <View className="img2">
+                <Image src="" />
+              </View>
+              <View className="img3">
+                <Image src="" />
+              </View>
+              <View className="img4">
+                <Image src="" />
+              </View>
+              <View className="img5">
+                <Image src="" />
+              </View>
+              <View className="img6">
+                <Image src="" />
+              </View>
+            </View>
+          </View>
         </View>
       </View>
     )
