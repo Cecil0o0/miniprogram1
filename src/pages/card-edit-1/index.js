@@ -19,7 +19,7 @@ export default class CardEdit1 extends Component {
 
   componentDidHide () { }
 
-  onClickFormItem() {
+  onClickFormItem(type) {
     Taro.chooseImage({
       count: 6,
       sizeType: ['original', 'compressed'],
@@ -28,9 +28,9 @@ export default class CardEdit1 extends Component {
         // tempFilePath可以作为img标签的src属性显示图片
         const tempFilePaths = res.tempFilePaths
         console.log(tempFilePaths)
-        Taro.setStorageSync('1$card-edit-photos', tempFilePaths)
+        Taro.setStorageSync(type + '$card-edit-photos', tempFilePaths)
         Taro.navigateTo({
-          url: `/pages/card-edit-2/index`
+          url: `/pages/card-edit-3/index?type=${type}`
         })
       },
       fail (e) {

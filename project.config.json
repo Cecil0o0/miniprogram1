@@ -4,7 +4,7 @@
 	"description": "模特信息管理",
 	"appid": "wxa324150d4ca3f515",
 	"setting": {
-		"urlCheck": true,
+		"urlCheck": false,
 		"es6": false,
 		"postcss": false,
 		"minified": false,

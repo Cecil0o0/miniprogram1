@@ -8,10 +8,12 @@ class App extends Component {
   config = {
     pages: [
       'pages/index/index',
+      'pages/card-edit-1/index',
+      'pages/card-edit-3/index',
+      'pages/card-edit-2/index',
+      'pages/wx-cropper/index',
       'pages/advice/index',
       'pages/attention/index',
-      'pages/card-edit-1/index',
-      'pages/card-edit-2/index',
       'pages/id-verify/index',
       'pages/info-exp-edit/index',
       'pages/resume/index',
