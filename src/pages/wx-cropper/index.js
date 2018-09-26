@@ -9,15 +9,15 @@ let PAGE_X, // 手按下的x位置
     T_PAGE_Y, // 手移动的时候Y的位置
     CUT_L,  // 初始化拖拽元素的left值
     CUT_T,  // 初始化拖拽元素的top值
-    CUT_R,  // 初始化拖拽元素的
-    CUT_B,  // 初始化拖拽元素的
-    CUT_W,  // 初始化拖拽元素的宽度
-    CUT_H,  //  初始化拖拽元素的高度
+    CUT_R,  // 初始化拖拽元素的right值
+    CUT_B,  // 初始化拖拽元素的bottom值
+    CUT_W = 214,  // 初始化拖拽元素的宽度
+    CUT_H = 313,  //  初始化拖拽元素的高度
     IMG_RATIO,  // 图片比例
     IMG_REAL_W,  // 图片实际的宽度
     IMG_REAL_H,   // 图片实际的高度
     DRAFG_MOVE_RATIO = 750 / wx.getSystemInfoSync().windowWidth,  //移动时候的比例,
-    INIT_DRAG_POSITION = 200,   // 初始化屏幕宽度和裁剪区域的宽度之差，用于设置初始化裁剪的宽度
+    INIT_DRAG_POSITION = 268,   // 初始化屏幕宽度和裁剪区域的宽度之差，用于设置初始化裁剪的宽度
     DRAW_IMAGE_W = 2000 // 设置生成的图片宽度
 
 let imgUrlStorageKey = 'cropper__img'
@@ -117,16 +117,21 @@ Page({
             // 初始化left right
             cropperL: Math.ceil((SCREEN_WIDTH - SCREEN_WIDTH) / 2),
             cropperT: Math.ceil((SCREEN_WIDTH - SCREEN_WIDTH / IMG_RATIO) / 2),
-            cutL: Math.ceil((SCREEN_WIDTH - SCREEN_WIDTH + INIT_DRAG_POSITION) / 2),
-            cutT: Math.ceil((SCREEN_WIDTH / IMG_RATIO - (SCREEN_WIDTH / IMG_RATIO - INIT_DRAG_POSITION)) / 2),
-            cutR: Math.ceil((SCREEN_WIDTH - SCREEN_WIDTH + INIT_DRAG_POSITION) / 2),
-            cutB: Math.ceil((SCREEN_WIDTH / IMG_RATIO - (SCREEN_WIDTH / IMG_RATIO - INIT_DRAG_POSITION)) / 2),
+            // cutL: Math.ceil((SCREEN_WIDTH - SCREEN_WIDTH + INIT_DRAG_POSITION) / 2),
+            // cutT: Math.ceil((SCREEN_WIDTH / IMG_RATIO - (SCREEN_WIDTH / IMG_RATIO - INIT_DRAG_POSITION)) / 2),
+            // cutR: Math.ceil((SCREEN_WIDTH - SCREEN_WIDTH + INIT_DRAG_POSITION) / 2),
+            // cutB: Math.ceil((SCREEN_WIDTH / IMG_RATIO - (SCREEN_WIDTH / IMG_RATIO - INIT_DRAG_POSITION)) / 2),
+            cutL: Math.ceil((SCREEN_WIDTH - CUT_W) / 2),
+            cutR: Math.ceil((SCREEN_WIDTH - CUT_W) / 2),
+            cutT: Math.ceil((SCREEN_WIDTH / IMG_RATIO - CUT_H) / 2),
+            cutB: Math.ceil((SCREEN_WIDTH / IMG_RATIO - CUT_H) / 2),
             // 图片缩放值
             scaleP: IMG_REAL_W / SCREEN_WIDTH,
             qualityWidth: DRAW_IMAGE_W,
             innerAspectRadio: IMG_RATIO
           })
         } else {
+          // 此时SCREEN_WIDTH为cropper区域高度
           _this.setData({
             cropperW: SCREEN_WIDTH * IMG_RATIO,
             cropperH: SCREEN_WIDTH,
@@ -134,10 +139,15 @@ Page({
             cropperL: Math.ceil((SCREEN_WIDTH - SCREEN_WIDTH * IMG_RATIO) / 2),
             cropperT: Math.ceil((SCREEN_WIDTH - SCREEN_WIDTH) / 2),
 
-            cutL: Math.ceil((SCREEN_WIDTH * IMG_RATIO - (SCREEN_WIDTH * IMG_RATIO)) / 2),
-            cutT: Math.ceil((SCREEN_WIDTH - INIT_DRAG_POSITION) / 2),
-            cutB: Math.ceil((SCREEN_WIDTH - INIT_DRAG_POSITION) / 2),
-            cutR: Math.ceil((SCREEN_WIDTH * IMG_RATIO - (SCREEN_WIDTH * IMG_RATIO)) / 2),
+            // cutL: Math.ceil((SCREEN_WIDTH * IMG_RATIO - (SCREEN_WIDTH * IMG_RATIO)) / 2),
+            // cutT: Math.ceil((SCREEN_WIDTH - INIT_DRAG_POSITION) / 2),
+            // cutB: Math.ceil((SCREEN_WIDTH - INIT_DRAG_POSITION) / 2),
+            // cutR: Math.ceil((SCREEN_WIDTH * IMG_RATIO - (SCREEN_WIDTH * IMG_RATIO)) / 2),
+
+            cutL: Math.ceil((SCREEN_WIDTH * IMG_RATIO - CUT_W) / 2),
+            cutR: Math.ceil((SCREEN_WIDTH * IMG_RATIO - CUT_W) / 2),
+            cutT: Math.ceil((SCREEN_WIDTH - CUT_H) / 2),
+            cutB: Math.ceil((SCREEN_WIDTH - CUT_H) / 2),
             // 图片缩放值
             scaleP: IMG_REAL_W / SCREEN_WIDTH,
             qualityWidth: DRAW_IMAGE_W,
@@ -244,6 +254,8 @@ Page({
           //   current: '', // 当前显示图片的http链接
           //   urls: [res.tempFilePath] // 需要预览的图片http链接列表
           // })
+
+          // 将数据传回上一页
           wx.showLoading({
             title: '正在裁剪',
             mask: true
@@ -315,7 +327,7 @@ Page({
         if (CUT_B + dragLengthY < 0) dragLengthY = -CUT_B
         if (CUT_R + dragLengthX < 0) dragLengthX = -CUT_R
         this.setData({
-          cutB: CUT_B + dragLengthY,
+          cutB: CUT_B + dragLengthX / CUT_W * CUT_H,
           cutR: CUT_R + dragLengthX
         })
         break;

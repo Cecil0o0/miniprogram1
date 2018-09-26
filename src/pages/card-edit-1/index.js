@@ -28,10 +28,19 @@ export default class CardEdit1 extends Component {
         // tempFilePath可以作为img标签的src属性显示图片
         const tempFilePaths = res.tempFilePaths
         console.log(tempFilePaths)
-        Taro.setStorageSync(type + '$card-edit-photos', tempFilePaths)
-        Taro.navigateTo({
-          url: `/pages/card-edit-3/index?type=${type}`
-        })
+        if (tempFilePaths.length === 6) {
+          Taro.setStorageSync(type + '$card-edit-photos', tempFilePaths)
+          Taro.navigateTo({
+            url: `/pages/card-edit-3/index?type=${type}`
+          })
+        } else {
+          Taro.showModal({
+            title: '温馨提示',
+            content: '请提供模特卡需求的图片数量，在进行下一步。',
+            showCancel: false,
+            confirmText: '知道啦'
+          })
+        }
       },
       fail (e) {
         console.log(e)

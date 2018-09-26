@@ -4,8 +4,8 @@ import './index.styl'
 import CaretRightPng from '../../images/caret_right.png'
 
 const canvasSize = {
-  width: 4056,
-  height: 1717
+  width: 4056 / 2,
+  height: 1717 / 2
 }
 
 const heights = []
@@ -32,7 +32,8 @@ const bgcolors = [
   { name: '红', value: 'red' },
   { name: '黄', value: 'yellow' },
   { name: '蓝', value: 'blue' },
-  { name: '白', value: 'white' }
+  { name: '白', value: 'white' },
+  { name: '浅灰', value: '#d1d3db'}
 ]
 
 export default class CardEdit2 extends Component {
@@ -86,6 +87,8 @@ export default class CardEdit2 extends Component {
     // 背景
     ctx.setFillStyle(bgcolor.value)
     ctx.fillRect(0, 0, canvasSize.width, canvasSize.height)
+    const scale = 0.5
+    ctx.setTransform(scale, 0, 0, scale, 0, 0)
     ctx.setFontSize(86)
     ctx.setFillStyle('#000')
     ctx.fillRect(102, 76, 16, 85)
@@ -123,7 +126,6 @@ export default class CardEdit2 extends Component {
         destHeight: canvasSize.height * 2,
         canvasId: 'canvas',
         success: (res) => {
-          console.log(res.tempFilePath)
           Taro.showLoading({
             title: '正在保存模卡',
             mask: true
@@ -132,6 +134,19 @@ export default class CardEdit2 extends Component {
             filePath: res.tempFilePath,
             complete: () => {
               Taro.hideLoading()
+              Taro.showToast({
+                title: '已保存至相册',
+                duration: 1000
+              })
+              var timer = setTimeout(() => {
+                Taro.navigateBack({
+                  delta: 3
+                })
+                Taro.switchTab({
+                  url: '/pages/index/index'
+                })
+                clearTimeout(timer)
+              }, 1000)
             }
           })
         },

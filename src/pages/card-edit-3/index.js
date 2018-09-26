@@ -152,6 +152,7 @@ export default class CardEdit22 extends Component {
             返回
           </View>
         </View>
+        <View className="help-text">温馨提示：所有图片需进行编辑</View>
       </View>
     )
   }
