@@ -294,13 +294,13 @@ export default class CardEdit2 extends Component {
             </View>
           </View>
         </Picker>
-        <View className="form-item" onClick={this.onClickFormItem.bind(this, 'qrcode')}>
+        {/* <View className="form-item" onClick={this.onClickFormItem.bind(this, 'qrcode')}>
           <View className="form-item-label">二维码展示</View>
           <View className="form-item-info"></View>
           <View className="form-item-suffix">
             <Image src={CaretRightPng} />
           </View>
-        </View>
+        </View> */}
         <Picker range={bgcolors} range-key="name" onChange={this.onColorChange} value={bgcolor_value}>
           <View className="form-item">
             <View className="form-item-label">背景颜色</View>
