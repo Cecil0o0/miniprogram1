@@ -42,29 +42,26 @@ export default class SelfInfo extends Component {
         {
           year: 2013,
           name: '非诚勿扰',
-          // 1: 电影
-          type: 1,
+          type: '电影',
           director: '冯小刚',
           character: '王嘉涵',
-          coActor: ['葛优', '舒淇', '郑恺']
+          coActor: '葛优 舒淇 郑恺'
         },
         {
           year: 2013,
           name: '非诚勿扰',
-          // 1: 电影
-          type: 1,
+          type: '电影',
           director: '冯小刚',
           character: '王嘉涵',
-          coActor: ['葛优', '舒淇', '郑恺']
+          coActor: '葛优 舒淇 郑恺'
         },
         {
-          year: 2014,
+          year: 2013,
           name: '非诚勿扰',
-          // 1: 电影
-          type: 1,
+          type: '电影',
           director: '冯小刚',
           character: '王嘉涵',
-          coActor: ['葛优', '舒淇', '郑恺']
+          coActor: '葛优 舒淇 郑恺'
         }
       ],
       other: `2013年，范冰冰蝉联2014福布斯中国名人榜第一位，5月23日，布莱恩·辛格导演，休·杰克曼；詹姆斯·麦卡沃伊；迈克尔·法斯宾德主演的电影《X战警：逆转未来》全球同步上映，范冰冰在其中饰演“闪烁女Blink”一角。`

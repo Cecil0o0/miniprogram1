@@ -16,6 +16,11 @@ import RectPng from '../../images/rect.png'
 import ChatPng from '../../images/chat.png'
 import BluePersonPng from '../../images/blue_person.png'
 import MenuPng from '../../images/menu.png'
+import NotDonatePng from '../../images/resume_not_donate.png'
+import DonatePng from '../../images/resume_donate.png'
+import NotPopuPng from '../../images/resume_not_popu.png'
+import PopuPng from '../../images/resume_popu.png'
+import SharePng from '../../images/resume_share.png'
 
 export default class Resume extends Component {
   constructor(props) {
@@ -208,11 +213,9 @@ export default class Resume extends Component {
           </View>
         )}
         <View className="menu">
-          <Image src={VoicePng} />
-          <Image src={RectPng} />
-          <Image src={ChatPng} />
-          <Image src={BluePersonPng} />
-          <Image src={MenuPng} />
+          <Image src={DonatePng} />
+          <Image src={PopuPng} />
+          <Image src={SharePng} />
         </View>
       </View>
     )

@@ -4,7 +4,6 @@ import ListPng from '../../images/list.png'
 import ActionPng from '../../images/action.png'
 import PersonOPng from '../../images/person_o.png'
 import PeoplePng from '../../images/people.png'
-import filters from '../../lib/filter'
 import './experiences.styl'
 
 export default class Experiences extends Component {
@@ -13,11 +12,10 @@ export default class Experiences extends Component {
       {
         year: 2013,
         name: '非诚勿扰',
-        // 1: 电影
-        type: 1,
+        type: '电影',
         director: '冯小刚',
         character: '王嘉涵',
-        coActor: ['葛优', '舒淇', '郑恺']
+        coActor: '葛优 舒淇 郑恺'
       }
     ]
   }
@@ -34,7 +32,7 @@ export default class Experiences extends Component {
                   <Image src={ListPng} />
                   类型
                 </View>
-                <View>{filters.expType(exp.type)}</View>
+                <View>{exp.type}</View>
               </View>
               <View className="content">
                 <View>
@@ -55,7 +53,7 @@ export default class Experiences extends Component {
                   <Image src={PeoplePng} />
                   合作演员
                 </View>
-                <View>{exp.coActor.join(' ')}</View>
+                <View>{exp.coActor}</View>
               </View>
             </View>
           )
