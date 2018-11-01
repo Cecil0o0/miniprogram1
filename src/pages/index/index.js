@@ -1,6 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Swiper, Icon, SwiperItem, Text, Image } from '@tarojs/components'
 import cn from 'classnames'
+import { api_banners } from '../../api'
 import './index.styl'
 import ModelCard from '../../components/model-card/index'
 import Loadmore from '../../components/loadmore/index'
@@ -85,7 +86,7 @@ export default class Index extends Component {
   }
 
   clickModalCard() {
-    Taro.switchTab({
+    Taro.navigateTo({
       url: '/pages/resume/index'
     })
   }
@@ -98,7 +99,26 @@ export default class Index extends Component {
 
   componentWillMount() {}
 
-  componentDidMount() {}
+  componentDidMount() {
+    let redirect = this.$router.params.redirect
+    if (redirect) {
+      Taro.navigateTo({
+        url: redirect
+      })
+    }
+    // 获取banner图
+    this.getBanners()
+  }
+
+  getBanners() {
+    api_banners().then(res => {
+      if (res.success) {
+        this.setState({
+          swipers: res.data
+        })
+      }
+    })
+  }
 
   componentWillUnmount() {}
 

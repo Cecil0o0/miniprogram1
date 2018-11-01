@@ -4,6 +4,7 @@ import update from 'immutability-helper'
 import './index.styl'
 import CaretRightPng from '../../images/caret_right.png'
 import { experiences_types as types } from '../../helper/types'
+import RabbishPng from '../../images/rabbish.png'
 
 export default class ExpEdit extends Component {
   constructor() {
@@ -32,6 +33,14 @@ export default class ExpEdit extends Component {
             $set: val
           }
         }
+      }
+    }))
+  }
+
+  deleteExp(idx) {
+    this.setState(update(this.state, {
+      experiences: {
+        $splice: [[idx, 1]]
       }
     }))
   }
@@ -79,16 +88,6 @@ export default class ExpEdit extends Component {
     navigationBarTitleText: '演艺经历编辑'
   }
 
-  componentWillMount() {}
-
-  componentDidMount() {}
-
-  componentWillUnmount() {}
-
-  componentDidShow() {}
-
-  componentDidHide() {}
-
   render() {
     const { experiences } = this.state
     return (
@@ -97,13 +96,18 @@ export default class ExpEdit extends Component {
           const { year, name, type, director, character, coActor } = item
           return (
             <View className="exp-wrapper" key={idx}>
-              <Picker mode="date" fields="year" value={year} onChange={this.onDateChange.bind(this, idx)}>
-                <View className="form-item year">
-                  <View className="form-item-label">{year}年</View>
-                  <View className="form-item-info">选择年份</View>
-                  <View className="form-item-suffix"><Image src={CaretRightPng}></Image></View>
+              <View className="close-wrapper">
+                <View className="close-btn" onClick={this.deleteExp.bind(this, idx)}>
+                  <Image src={RabbishPng} />
                 </View>
-              </Picker>
+                <Picker mode="date" fields="year" value={year} onChange={this.onDateChange.bind(this, idx)}>
+                  <View className="form-item year">
+                    <View className="form-item-label">{year}年</View>
+                    <View className="form-item-info">选择年份</View>
+                    <View className="form-item-suffix"><Image src={CaretRightPng}></Image></View>
+                  </View>
+                </Picker>
+              </View>
               <View className="form-item">
                 <View className="form-item-label">影片名称</View>
                 <Input value={name} className="form-item-info" />

@@ -56,7 +56,7 @@ export default class SelfInfo extends Component {
           coActor: '葛优 舒淇 郑恺'
         },
         {
-          year: 2013,
+          year: 2014,
           name: '非诚勿扰',
           type: '电影',
           director: '冯小刚',
@@ -153,7 +153,7 @@ export default class SelfInfo extends Component {
             个人视频
           </View>
           <View className="inner-wrapper">
-            <Video />
+            <Video src="blob:https://www.mgtv.com/0ce349a6-b85d-41f7-a3fd-51f30e570240" />
           </View>
         </View>
         <View className="exp wrapper">
@@ -169,14 +169,13 @@ export default class SelfInfo extends Component {
                   className={cn('accordion-item', {
                     active: this.state.selectedExp === idx
                   })}
-                  onClick={this.handleClick.bind(this, idx)}
                   key={idx}
                 >
                   <View className="icon">
                     <Image src={PointPng} />
                   </View>
                   <View className="content">
-                    <View className="header">
+                    <View className="header" onClick={this.handleClick.bind(this, idx)}>
                       {year}年 <Image src={CaretRightPng} className="caret" />
                     </View>
                     <View className="body">

@@ -8,9 +8,9 @@ class App extends Component {
   config = {
     pages: [
       'pages/index/index',
+      'pages/card-edit-2/index',
       'pages/card-edit-1/index',
       'pages/card-edit-3/index',
-      'pages/card-edit-2/index',
       'pages/wx-cropper/index',
       'pages/advice/index',
       'pages/attention/index',
@@ -41,12 +41,6 @@ class App extends Component {
           text: '首页',
           iconPath: './images/home_home.png',
           selectedIconPath: './images/home_home_active.png'
-        },
-        {
-          pagePath: 'pages/resume/index',
-          text: '个人主页',
-          iconPath: './images/home_resume.png',
-          selectedIconPath: './images/home_resume_active.png'
         },
         {
           pagePath: 'pages/self-center/index',

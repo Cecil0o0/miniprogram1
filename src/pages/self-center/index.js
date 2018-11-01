@@ -1,6 +1,8 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
 import './index.styl'
+import { api_info } from '../../api'
+import { USER_MODEL_INFO } from '../../lib/constants'
 import AttentionPng from '../../images/attention.png'
 import BasicInfoPng from '../../images/basic_info.png'
 import PosterPng from '../../images/upload.png'
@@ -108,11 +110,25 @@ export default class SelfCenter extends Component {
 
   componentWillMount() {}
 
-  componentDidMount() {}
+  componentDidMount() {
+    api_info('0a3305ff-a32c-4f69-86c4-fbdb18208ec3').then(res => {
+      if (res.success) {
+        this.setState({
+          info: res.data
+        })
+        Taro.setStorageSync(USER_MODEL_INFO, res.data)
+      }
+    })
+  }
 
   componentWillUnmount() {}
 
-  componentDidShow() {}
+  componentDidShow() {
+    const info = Taro.getStorageSync(USER_MODEL_INFO)
+    if (info) {
+      this.setState({ info })
+    }
+  }
 
   componentDidHide() {}
 
@@ -136,7 +152,7 @@ export default class SelfCenter extends Component {
   }
 
   render() {
-    const { poster, avatar, name, popularity, subscribe, intro } = this.state.info
+    const { poster, avatar, name, popularity, subscribe, intro, sex } = this.state.info
     return (
       <View className="self-center">
         <View
@@ -151,7 +167,7 @@ export default class SelfCenter extends Component {
           />
           <View className="first">
             <Text>{name}</Text>
-            <Image className="sex" src={FemalePng} />
+            { sex === 1 ? <Image className="sex" src={MalePng} /> : <Image className="sex" src={FemalePng} /> }
           </View>
           <View className="btn-group">
             <View className="btn">

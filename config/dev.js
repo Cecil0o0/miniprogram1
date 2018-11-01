@@ -4,7 +4,7 @@ module.exports = {
     NODE_ENV: '"development"'
   },
   defineConstants: {
-    URL_PREFIX: '"http://localhost:3000"'
+    URL_PREFIX: '"http://localhost:3100"'
   },
   weapp: {},
   h5: {

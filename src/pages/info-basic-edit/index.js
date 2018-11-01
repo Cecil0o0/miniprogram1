@@ -3,6 +3,9 @@ import { View, Input, Picker, Textarea, Image } from '@tarojs/components'
 import QfModal from '../../components/modal'
 import './index.styl'
 import CaretRightPng from '../../images/caret_right.png'
+import { USER_MODEL_INFO } from '../../lib/constants'
+import { api_info_edit } from '../../api'
+import { delayToExec } from '../../lib/utils'
 
 const ages = []
 for (let i = 10; i <= 60; i++) {
@@ -65,7 +68,12 @@ export default class InfoBasicEdit extends Component {
 
   componentWillMount() {}
 
-  componentDidMount() {}
+  componentDidMount() {
+    const info = Taro.getStorageSync(USER_MODEL_INFO)
+    this.setState({
+      info
+    })
+  }
 
   componentWillUnmount() {}
 
@@ -80,11 +88,26 @@ export default class InfoBasicEdit extends Component {
   }
 
   confirm() {
-    console.log('confirm')
+    const { info } = this.state
+    api_info_edit(info).then(res => {
+      Taro.setStorageSync(USER_MODEL_INFO, info)
+      if (res.success) {
+        Taro.showToast({
+          title: '保存成功',
+          duration: 500,
+          mask: true
+        })
+        delayToExec(this.goBack.bind(this), 500)
+      }
+    })
   }
 
   cancel() {
-    console.log('cancel')
+    this.goBack()
+  }
+
+  goBack() {
+    Taro.navigateBack()
   }
 
   modalConfirm() {
@@ -171,6 +194,14 @@ export default class InfoBasicEdit extends Component {
   onCityChange(e) {
     this.setState({
       info: this.setInfo('city', e.detail.value)
+    })
+  }
+
+  onTextareaChange(e) {
+    this.setState({
+      info: Object.assign(this.state.info, {
+        intro: e.detail.value
+      })
     })
   }
 
@@ -270,6 +301,7 @@ export default class InfoBasicEdit extends Component {
               className="form-item-info-textarea"
               value={this.dataTrans('intro', info['intro'])}
               style={{ position: 'unset' }}
+              onInput={this.onTextareaChange}
             />
           </View>
           <View className="form-item-suffix" />

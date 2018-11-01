@@ -1,5 +1,5 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Swiper, SwiperItem, Image, Text } from '@tarojs/components'
+import { View, Swiper, SwiperItem, Image, Text, Button } from '@tarojs/components'
 import cn from 'classnames'
 import Loadmore from '../../components/loadmore'
 import SelfInfo from '../../components/self-info'
@@ -21,6 +21,7 @@ import DonatePng from '../../images/resume_donate.png'
 import NotPopuPng from '../../images/resume_not_popu.png'
 import PopuPng from '../../images/resume_popu.png'
 import SharePng from '../../images/resume_share.png'
+import MobileWhitePng from '../../images/self_center_mobile_white.png'
 
 export default class Resume extends Component {
   constructor(props) {
@@ -98,6 +99,20 @@ export default class Resume extends Component {
     navigationBarTitleText: '个人简历'
   }
 
+  makePhoneCall (phoneNumber) {
+    Taro.makePhoneCall({
+      phoneNumber
+    })
+  }
+
+  onShareAppMessage() {
+    return {
+      title: '某某某|芃叔小简历',
+      imageUrl: 'http://t2.hddhhn.com/uploads/tu/201610/198/hkgip2b102z.jpg',
+      path: '/pages/index/index?redirect=/pages/resume/index'
+    }
+  }
+
   componentWillMount() {}
 
   componentDidMount() {}
@@ -143,16 +158,10 @@ export default class Resume extends Component {
               </View>
             </View>
             <View className="second">
-              <View className="btn-group">
-                <View className="btn">
-                  <Image src={PlusPng} className="add icon" />
-                  <Text>关注</Text>
-                </View>
+              <View className="btn-group" onClick={this.makePhoneCall.bind(this, '13812346688')}>
+                <Image src={MobileWhitePng} className="btn" />
                 <View className="divider-vertical" />
-                <View className="btn">
-                  <Image src={EmailPng} className="email icon" />
-                  <Text>私信</Text>
-                </View>
+                <Text className="mobile">138****6688</Text>
               </View>
             </View>
           </View>
@@ -215,7 +224,7 @@ export default class Resume extends Component {
         <View className="menu">
           <Image src={DonatePng} />
           <Image src={PopuPng} />
-          <Image src={SharePng} />
+          <Button className="transparent" open-type="share"><Image src={SharePng} /></Button>
         </View>
       </View>
     )

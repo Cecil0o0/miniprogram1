@@ -3,6 +3,7 @@ import { View, Image } from '@tarojs/components'
 import './index.styl'
 import HeartPng from '../../images/heart.png'
 import MoneyBagPng from '../../images/money_bag.png'
+import { USER_MODEL_INFO } from '../../lib/constants'
 
 export default class Attention extends Component {
   constructor() {
@@ -43,7 +44,12 @@ export default class Attention extends Component {
 
   componentWillMount() {}
 
-  componentDidMount() {}
+  componentDidMount = () => {
+    const info = Taro.getStorageSync(USER_MODEL_INFO)
+    this.setState({
+      list: info.attentions || []
+    })
+  }
 
   componentWillUnmount() {}
 

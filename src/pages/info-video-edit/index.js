@@ -1,6 +1,9 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Video } from '@tarojs/components'
 import './index.styl'
+import { USER_MODEL_INFO } from '../../lib/constants'
+import { api_info } from '../../api'
+import { delayToExec } from '../../lib/utils'
 
 export default class InfoVideoEdit extends Component {
 
@@ -8,29 +11,62 @@ export default class InfoVideoEdit extends Component {
     navigationBarTitleText: '视频编辑'
   }
 
-  componentWillMount () { }
+  state = {
+    src: '',
+    info: {}
+  }
 
-  componentDidMount () { }
-
-  componentWillUnmount () { }
-
-  componentDidShow () { }
-
-  componentDidHide () { }
+  componentDidShow () {
+    const info = Taro.getStorageSync(USER_MODEL_INFO)
+    this.state.info = info
+    if (info.video && info.video.name) {
+      this.setState({
+        src: `${URL_PREFIX}/upload/${info.video.name}`
+      })
+    }
+  }
 
   upload () {
-    console.log('upload')
+    wx.chooseVideo({
+      sourceType: ['album','camera'],
+      maxDuration: 60,
+      camera: 'back',
+      success: (res) => {
+        this.setState({
+          src: res.tempFilePath
+        })
+      }
+    })
   }
 
   confirm () {
-    console.log('confirm')
+    wx.uploadFile({
+      url: URL_PREFIX + '/v1/upload/' + this.state.info.id,
+      filePath: this.state.src,
+      name: 'file',
+      success: () => {
+        Taro.showToast({
+          title: '上传成功',
+          duration: 1000,
+          mask: true
+        })
+        delayToExec(() => {
+          api_info(this.state.info.id).then(res => {
+            if (res.success) {
+              Taro.setStorageSync(USER_MODEL_INFO, res.data)
+              Taro.navigateBack()
+            }
+          })
+        }, 1000)
+      }
+    })
   }
 
   render () {
     return (
       <View className='video-edit'>
-        <Video></Video>
-        <View className="upload-btn" onClick={this.upload}>重新上传视频</View>
+        <Video src={this.state.src}></Video>
+        <View className="upload-btn" onClick={this.upload}>重新选择视频</View>
         <View className="confirm-btn" onClick={this.confirm}>确定</View>
       </View>
     )
