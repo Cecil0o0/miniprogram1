@@ -32,7 +32,7 @@ export default class SelfCenter extends Component {
   state = {
     info: {
       id: 0,
-      poster:
+      cover:
         'https://www.10wallpaper.com/wallpaper/1366x768/1609/kenza_mel_beach_photography-Beauty_poster_wallpaper_1366x768.jpg',
       avatar: 'https://wx4.sinaimg.cn/orj360/96a79eebgy1fpo3ig1w9qj20c80c83zr.jpg',
       name: '某某某',
@@ -58,12 +58,12 @@ export default class SelfCenter extends Component {
     },
     {
       src: PosterPng,
-      url: '/pages/info-photo-edit/index',
+      url: '/pages/info-photo-edit/index?type=1',
       label: '上传海报'
     },
     {
       src: PicturesPng,
-      url: '/pages/info-photo-edit/index',
+      url: '/pages/info-photo-edit/index?type=2',
       label: '上传相册'
     },
     {
@@ -152,12 +152,12 @@ export default class SelfCenter extends Component {
   }
 
   render() {
-    const { poster, avatar, name, popularity, subscribe, intro, sex } = this.state.info
+    const { cover, avatar, name, popularity, subscribe, intro, sex } = this.state.info
     return (
       <View className="self-center">
         <View
           className="header"
-          style={{ backgroundImage: `url("${poster}")` }}
+          style={{ backgroundImage: `url("${cover}")` }}
           onClick={this.clickCover}
         >
           <View

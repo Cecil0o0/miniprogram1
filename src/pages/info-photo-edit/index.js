@@ -2,54 +2,40 @@ import Taro, { Component } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import update from 'immutability-helper'
 import './index.styl'
+import { USER_MODEL_INFO } from '../../lib/constants'
+import { uploadFiles, getUploadResAbsAddress, delayToExec, showToast } from '../../lib/utils'
+import { api_info_edit, api_info } from '../../api'
 
 export default class InfoPhotoEdit extends Component {
-  config = {
-    navigationBarTitleText: '相册编辑'
-  }
-
   state = {
     isEdit: false,
     selected: [],
-    imgs: [
-      {
-        id: 1,
-        src: 'http://t2.hddhhn.com/uploads/tu/20150402/220ZQ614-0.jpg'
-      },
-      {
-        id: 2,
-        src: 'http://t2.hddhhn.com/uploads/tu/20150402/220ZQ614-0.jpg'
-      },
-      {
-        id: 3,
-        src: 'http://t2.hddhhn.com/uploads/tu/20150402/220ZQ614-0.jpg'
-      },
-      {
-        id: 4,
-        src: 'http://t2.hddhhn.com/uploads/tu/20150402/220ZQ614-0.jpg'
-      },
-      {
-        id: 5,
-        src: 'http://t2.hddhhn.com/uploads/tu/20150402/220ZQ614-0.jpg'
-      },
-      {
-        id: 6,
-        src: 'http://t2.hddhhn.com/uploads/tu/20150402/220ZQ614-0.jpg'
-      },
-      {
-        id: 7,
-        src: 'http://t2.hddhhn.com/uploads/tu/20150402/220ZQ614-0.jpg'
-      },
-      {
-        id: 8,
-        src: 'http://t2.hddhhn.com/uploads/tu/20150402/220ZQ614-0.jpg'
-      }
-    ]
+    imgs: [],
+    type: 1
   }
 
-  componentWillMount() {}
+  componentWillMount() {
+    // 1为poster
+    // 2为photo
+    this.state.type = this.$router.params.type || 1
+    Taro.setNavigationBarTitle({
+      title: this.state.type === '1' ? '海报编辑' : '相册编辑'
+    })
+  }
 
-  componentDidMount() {}
+  getAttr() {
+    return this.state.type === '1' ? 'posters' : 'photos'
+  }
+
+  componentDidMount(params) {
+    let info = Taro.getStorageSync(USER_MODEL_INFO)
+    this.setState({
+      imgs: info[this.getAttr()].map(item => ({
+        id: item.id,
+        src: getUploadResAbsAddress(item.name)
+      }))
+    })
+  }
 
   componentWillUnmount() {}
 
@@ -58,15 +44,70 @@ export default class InfoPhotoEdit extends Component {
   componentDidHide() {}
 
   delete() {
-    console.log('delete')
+    let deleteIndexes = this.state.selected.map(item => ([this.state.imgs.findIndex(img => img.id === item), 1]))
+    this.setState({
+      imgs: update(this.state.imgs, {
+        $splice: deleteIndexes
+      }),
+      selected: [],
+      isEdit: false
+    })
   }
 
   complete() {
-    console.log('complete')
+    let info = Taro.getStorageSync(USER_MODEL_INFO)
+    let uploadedFiles = this.state.imgs.filter(item => item.type === 'new')
+    Taro.showLoading('正在上传')
+    uploadFiles(uploadedFiles.map(item => item.src)).then(res => {
+      const indexes = res.map((resItem, index) => {
+        return this.state.imgs.findIndex(item => item.src === uploadedFiles[index].src)
+      })
+      let obj = {}
+      indexes.forEach((item, index) => {
+        obj[item] = {
+          $set: {
+            id: res[index].data,
+            src: uploadedFiles[index].src
+          }
+        }
+      })
+      this.setState({
+        imgs: update(this.state.imgs, obj)
+      }, () => {
+        Taro.showLoading('正在保存')
+        // 保存信息
+        api_info_edit({
+          id: info.id,
+          [this.getAttr()]: this.state.imgs.map(item => item.id)
+        }).then(res => {
+          api_info(res.data[0].id).then(res => {
+            if (res.success) Taro.setStorageSync(USER_MODEL_INFO, res.data)
+            showToast('保存成功')
+            delayToExec(Taro.navigateBack)
+          })
+        })
+      })
+    })
   }
 
-  upload() {
-    console.log('upload')
+  add() {
+    wx.chooseImage({
+      count: 9 - this.state.imgs.length,
+      sizeType: ['original', 'compressed'],
+      sourceType: ['album', 'camera'],
+      success: (res) => {
+        // tempFilePath可以作为img标签的src属性显示图片
+        const tempFilePaths = res.tempFilePaths
+        this.setState({
+          imgs: update(this.state.imgs, {
+            $push: tempFilePaths.map(item => ({
+              type: 'new',
+              src: item
+            }))
+          })
+        })
+      }
+    })
   }
 
   itemClick(id, isSelected) {
@@ -126,13 +167,12 @@ export default class InfoPhotoEdit extends Component {
             )
           })}
           {imgs.length < 9 && (
-            <View className="uploader" onClick={this.upload}>
+            <View className="uploader" onClick={this.add}>
               +
             </View>
           )}
         </View>
-        {isEdit &&
-          selected.length > 0 && (
+        {isEdit && (
             <View className="cancelBtn" onClick={this.delete}>
               删除选中照片
             </View>

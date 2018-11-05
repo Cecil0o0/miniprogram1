@@ -3,7 +3,7 @@ import { View, Video } from '@tarojs/components'
 import './index.styl'
 import { USER_MODEL_INFO } from '../../lib/constants'
 import { api_info } from '../../api'
-import { delayToExec } from '../../lib/utils'
+import { delayToExec, getUploadResAbsAddress, promisifyUpload } from '../../lib/utils'
 
 export default class InfoVideoEdit extends Component {
 
@@ -21,7 +21,7 @@ export default class InfoVideoEdit extends Component {
     this.state.info = info
     if (info.video && info.video.name) {
       this.setState({
-        src: `${URL_PREFIX}/upload/${info.video.name}`
+        src: getUploadResAbsAddress(info.video.name)
       })
     }
   }
@@ -40,25 +40,20 @@ export default class InfoVideoEdit extends Component {
   }
 
   confirm () {
-    wx.uploadFile({
-      url: URL_PREFIX + '/v1/upload/' + this.state.info.id,
-      filePath: this.state.src,
-      name: 'file',
-      success: () => {
-        Taro.showToast({
-          title: '上传成功',
-          duration: 1000,
-          mask: true
+    promisifyUpload(this.state.src).then(() => {
+      Taro.showToast({
+        title: '上传成功',
+        duration: 1000,
+        mask: true
+      })
+      delayToExec(() => {
+        api_info(this.state.info.id).then(res => {
+          if (res.success) {
+            Taro.setStorageSync(USER_MODEL_INFO, res.data)
+            Taro.navigateBack()
+          }
         })
-        delayToExec(() => {
-          api_info(this.state.info.id).then(res => {
-            if (res.success) {
-              Taro.setStorageSync(USER_MODEL_INFO, res.data)
-              Taro.navigateBack()
-            }
-          })
-        }, 1000)
-      }
+      }, 1000)
     })
   }
 
