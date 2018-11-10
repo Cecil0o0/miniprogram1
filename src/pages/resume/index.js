@@ -22,6 +22,8 @@ import NotPopuPng from '../../images/resume_not_popu.png'
 import PopuPng from '../../images/resume_popu.png'
 import SharePng from '../../images/resume_share.png'
 import MobileWhitePng from '../../images/self_center_mobile_white.png'
+import { api_info } from '../../api'
+import { getUploadResAbsAddress } from '../../lib/utils'
 
 export default class Resume extends Component {
   constructor(props) {
@@ -51,24 +53,9 @@ export default class Resume extends Component {
         }
       ],
       currTab: 1,
-      photos: [
-        {
-          src: 'http://t2.hddhhn.com/uploads/tu/201610/198/hkgip2b102z.jpg'
-        },
-        {
-          src: 'http://t2.hddhhn.com/uploads/tu/201610/198/hkgip2b102z.jpg'
-        },
-        {
-          src: 'http://t2.hddhhn.com/uploads/tu/201610/198/hkgip2b102z.jpg'
-        },
-        {
-          src: 'http://t2.hddhhn.com/uploads/tu/201610/198/hkgip2b102z.jpg'
-        }
-      ],
       info: {
         id: 0,
-        poster:
-          'https://www.10wallpaper.com/wallpaper/1366x768/1609/kenza_mel_beach_photography-Beauty_poster_wallpaper_1366x768.jpg',
+        posters: [],
         avatar: 'https://wx4.sinaimg.cn/orj360/96a79eebgy1fpo3ig1w9qj20c80c83zr.jpg',
         name: '某某某',
         age: 20,
@@ -84,7 +71,11 @@ export default class Resume extends Component {
         city: '北京市',
         school: '北京电影学院',
         exp: '三年平面模特',
-        specialities: ['唱歌', '跳舞', '书法']
+        specialities: ['唱歌', '跳舞', '书法'],
+        photos: [],
+        bindMobile: {
+          number: ''
+        }
       }
     }
   }
@@ -100,9 +91,17 @@ export default class Resume extends Component {
   }
 
   makePhoneCall (phoneNumber) {
-    Taro.makePhoneCall({
-      phoneNumber
-    })
+    if (phoneNumber) {
+      Taro.makePhoneCall({
+        phoneNumber
+      })
+    } else {
+      Taro.showToast({
+        title: '未绑定手机号',
+        mask: true,
+        duration: 1000
+      })
+    }
   }
 
   onShareAppMessage() {
@@ -113,18 +112,26 @@ export default class Resume extends Component {
     }
   }
 
-  componentWillMount() {}
+  previewPhotos() {
+    wx.previewImage({
+      urls: this.state.info.photos.map(item => item.src)
+    })
+  }
 
-  componentDidMount() {}
-
-  componentWillUnmount() {}
-
-  componentDidShow() {}
-
-  componentDidHide() {}
+  componentDidMount() {
+    const id = this.$router.params.id
+    api_info(id).then(res => {
+      if (res.success) {
+        this.setState({
+          info: res.data
+        })
+      }
+    })
+  }
 
   render() {
     const { info, currTab } = this.state
+    let mobile = info.bindMobile.number ? info.bindMobile.number : '未绑定'
     return (
       <View className="resume">
         <Swiper
@@ -135,7 +142,7 @@ export default class Resume extends Component {
           indicatorDots={false}
           autoplay
         >
-          {this.state.swipers.map((item, key) => {
+          {info.posters.map((item, key) => {
             return (
               <SwiperItem key={key}>
                 <View style={{ backgroundImage: `url("${item.src}")` }} />
@@ -146,22 +153,24 @@ export default class Resume extends Component {
         <View className="parallax-card">
           <View
             className="avatar"
-            style={{ backgroundImage: `url("${this.state.swipers[0].src}")` }}
+            style={{ backgroundImage: `url("${info.avatar}")` }}
           />
           <View className="info1">
             <View className="first">
               <View className="name">{info.name}</View>
-              <Image className="sex" src={FemalePng} />
-              <View className="id-wrapper">
+              <Image className="sex" src={info.sex === 1 ? MalePng : FemalePng} />
+              <View className="id-wrapper" style={{visibility: info.idVerify.isPass ? 'visible' : 'hidden'}}>
                 <Image src={IdVerify2Png} className="id-verify-icon" />
                 <Text className="verify-text">实名认证</Text>
               </View>
             </View>
             <View className="second">
-              <View className="btn-group" onClick={this.makePhoneCall.bind(this, '13812346688')}>
+              <View className="btn-group" onClick={this.makePhoneCall.bind(this, mobile)}>
                 <Image src={MobileWhitePng} className="btn" />
                 <View className="divider-vertical" />
-                <Text className="mobile">138****6688</Text>
+                <Text className="mobile">
+                  {mobile}
+                </Text>
               </View>
             </View>
           </View>
@@ -208,17 +217,18 @@ export default class Resume extends Component {
         ) : (
           <View className="container">
             <View className="photos-wrapper">
-              {this.state.photos.map((item, key) => {
+              {this.state.info.photos.map((item, key) => {
                 return (
                   <View
                     key={key}
                     className="photo"
                     style={{ backgroundImage: `url("${item.src}")` }}
+                    onClick={this.previewPhotos}
                   />
                 )
               })}
             </View>
-            <Loadmore />
+            {/* <Loadmore /> */}
           </View>
         )}
         <View className="menu">

@@ -20,7 +20,7 @@ export default class Experiences extends Component {
     ]
   }
   render() {
-    const exps = this.props.info || this.props.defaultProps.info
+    const exps = this.props.info || this.defaultProps.info
     return (
       <View className="experiences-wrapper">
         {exps.map((exp, idx) => {

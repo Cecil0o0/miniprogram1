@@ -27,10 +27,21 @@ export const uploadFiles = function(files = []) {
   return Promise.all(files.map(file => promisifyUpload(file)))
 }
 
-export const showToast = function(title) {
+export const showToast = function(title, icon = 'success') {
   Taro.showToast({
     title,
     mask: true,
-    duration: 1500
+    duration: 1500,
+    icon
   })
+}
+
+export const formatCurrency = function formatCurrency(str) {
+  return `${str.slice(0, -2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}.${str.slice(-2)}`
+}
+
+export const pick = function pick(obj, arr) {
+  let o = {}
+  arr.forEach(key => o[key] = obj[key])
+  return o
 }

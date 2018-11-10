@@ -75,12 +75,6 @@ export default class InfoBasicEdit extends Component {
     })
   }
 
-  componentWillUnmount() {}
-
-  componentDidShow() {}
-
-  componentDidHide() {}
-
   inputChange(e) {
     this.setState({
       inputValue: e.detail.value

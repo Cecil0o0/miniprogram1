@@ -30,18 +30,9 @@ export default class InfoPhotoEdit extends Component {
   componentDidMount(params) {
     let info = Taro.getStorageSync(USER_MODEL_INFO)
     this.setState({
-      imgs: info[this.getAttr()].map(item => ({
-        id: item.id,
-        src: getUploadResAbsAddress(item.name)
-      }))
+      imgs: info[this.getAttr()]
     })
   }
-
-  componentWillUnmount() {}
-
-  componentDidShow() {}
-
-  componentDidHide() {}
 
   delete() {
     let deleteIndexes = this.state.selected.map(item => ([this.state.imgs.findIndex(img => img.id === item), 1]))
@@ -55,6 +46,7 @@ export default class InfoPhotoEdit extends Component {
   }
 
   complete() {
+    // 非常复杂的上传操作
     let info = Taro.getStorageSync(USER_MODEL_INFO)
     let uploadedFiles = this.state.imgs.filter(item => item.type === 'new')
     Taro.showLoading('正在上传')
@@ -66,8 +58,7 @@ export default class InfoPhotoEdit extends Component {
       indexes.forEach((item, index) => {
         obj[item] = {
           $set: {
-            id: res[index].data,
-            src: uploadedFiles[index].src
+            src: res[index].data
           }
         }
       })
@@ -78,13 +69,12 @@ export default class InfoPhotoEdit extends Component {
         // 保存信息
         api_info_edit({
           id: info.id,
-          [this.getAttr()]: this.state.imgs.map(item => item.id)
+          [this.getAttr()]: this.state.imgs
         }).then(res => {
-          api_info(res.data[0].id).then(res => {
-            if (res.success) Taro.setStorageSync(USER_MODEL_INFO, res.data)
-            showToast('保存成功')
-            delayToExec(Taro.navigateBack)
-          })
+          const info = Taro.getStorageSync(USER_MODEL_INFO)
+          Taro.setStorageSync(USER_MODEL_INFO, Object.assign(info, {[this.getAttr()]: this.state.imgs}))
+          showToast('保存成功')
+          delayToExec(Taro.navigateBack)
         })
       })
     })
@@ -110,10 +100,10 @@ export default class InfoPhotoEdit extends Component {
     })
   }
 
-  itemClick(id, isSelected) {
+  itemClick(src, isSelected) {
     if (!this.state.isEdit) return
     if (isSelected) {
-      const index = this.state.selected.findIndex(item => item === id)
+      const index = this.state.selected.findIndex(item => item === src)
       this.setState(
         update(this.state, {
           selected: {
@@ -125,21 +115,21 @@ export default class InfoPhotoEdit extends Component {
       this.setState(
         update(this.state, {
           selected: {
-            $push: [id]
+            $push: [src]
           }
         })
       )
     }
   }
 
-  editPhoto(id) {
+  editPhoto(src) {
     this.setState(
       update(this.state, {
         isEdit: {
           $set: true
         },
         selected: {
-          $push: [id]
+          $push: [src]
         }
       })
     )
@@ -152,14 +142,14 @@ export default class InfoPhotoEdit extends Component {
         <View className="header">长按图片编辑</View>
         <View className="img-wrapper">
           {imgs.map((item, key) => {
-            const isSelected = selected.indexOf(item.id) !== -1
+            const isSelected = selected.indexOf(item.src) !== -1
             return (
               <View
                 key={key}
                 className="item"
                 style={{ backgroundImage: `url("${item.src}")` }}
-                onLongPress={this.editPhoto.bind(this, item.id)}
-                onClick={this.itemClick.bind(this, item.id, isSelected)}
+                onLongPress={this.editPhoto.bind(this, item.src)}
+                onClick={this.itemClick.bind(this, item.src, isSelected)}
               >
                 {isEdit &&
                   (isSelected ? <View className="checked" /> : <View className="uncheck" />)}

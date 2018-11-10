@@ -2,7 +2,7 @@ import Taro, { Component } from '@tarojs/taro'
 import { View, Video } from '@tarojs/components'
 import './index.styl'
 import { USER_MODEL_INFO } from '../../lib/constants'
-import { api_info } from '../../api'
+import { api_info, api_info_edit } from '../../api'
 import { delayToExec, getUploadResAbsAddress, promisifyUpload } from '../../lib/utils'
 
 export default class InfoVideoEdit extends Component {
@@ -13,15 +13,16 @@ export default class InfoVideoEdit extends Component {
 
   state = {
     src: '',
-    info: {}
+    info: {},
+    changed: false
   }
 
   componentDidShow () {
     const info = Taro.getStorageSync(USER_MODEL_INFO)
     this.state.info = info
-    if (info.video && info.video.name) {
+    if (info.video) {
       this.setState({
-        src: getUploadResAbsAddress(info.video.name)
+        src: info.video
       })
     }
   }
@@ -31,30 +32,40 @@ export default class InfoVideoEdit extends Component {
       sourceType: ['album','camera'],
       maxDuration: 60,
       camera: 'back',
-      success: (res) => {
+      success: res => {
         this.setState({
-          src: res.tempFilePath
+          src: res.tempFilePath,
+          changed: true
         })
       }
     })
   }
 
   confirm () {
-    promisifyUpload(this.state.src).then(() => {
-      Taro.showToast({
-        title: '上传成功',
-        duration: 1000,
-        mask: true
-      })
-      delayToExec(() => {
-        api_info(this.state.info.id).then(res => {
-          if (res.success) {
-            Taro.setStorageSync(USER_MODEL_INFO, res.data)
+    const fn = () => {
+      api_info_edit({
+        id: this.state.info.id,
+        video: this.state.src
+      }).then(res => {
+        if (res.success) {
+          Taro.showToast({
+            title: '上传成功',
+            duration: 1000,
+            mask: true
+          })
+          delayToExec(() => {
+            const info = Taro.getStorageSync(USER_MODEL_INFO)
+            Taro.setStorageSync(USER_MODEL_INFO, Object.assign(info, { video: this.state.src}))
             Taro.navigateBack()
-          }
-        })
-      }, 1000)
-    })
+          }, 1000)
+        }
+      })
+    }
+    if (this.state.changed) {
+      promisifyUpload(this.state.src).then(fn)
+    } else {
+      fn()
+    }
   }
 
   render () {

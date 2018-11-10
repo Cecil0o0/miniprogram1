@@ -22,3 +22,19 @@ export const api_info_edit = (data) => {
     data
   })
 }
+
+export const api_advice_add = data => {
+  return fetch({
+    url: `${prefix}/advice`,
+    method: 'POST',
+    data
+  })
+}
+
+// 以逗号分割的字符串
+export const api_get_uploads = ids => {
+  return fetch({
+    url: `${prefix}/upload/${ids}`,
+    method: 'GET'
+  })
+}

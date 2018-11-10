@@ -5,6 +5,9 @@ import './index.styl'
 import CaretRightPng from '../../images/caret_right.png'
 import { experiences_types as types } from '../../helper/types'
 import RabbishPng from '../../images/rabbish.png'
+import { api_info_edit } from '../../api'
+import { showToast, delayToExec } from '../../lib/utils'
+import { USER_MODEL_INFO } from '../../lib/constants'
 
 export default class ExpEdit extends Component {
   constructor() {
@@ -22,6 +25,15 @@ export default class ExpEdit extends Component {
       ],
       other: `2013年，范冰冰蝉联2014福布斯中国名人榜第一位，5月23日，布莱恩·辛格导演，休·杰克曼；詹姆斯·麦卡沃伊；迈克尔·法斯宾德主演的电影《X战警：逆转未来》全球同步上映，范冰冰在其中饰演“闪烁女Blink”一角。`
     }
+  }
+
+  componentDidMount() {
+    const info = Taro.getStorageSync(USER_MODEL_INFO)
+    this.info = info
+    this.setState({
+      experiences: info.actingExperience.list,
+      other: info.actingExperience.other
+    })
   }
 
   onDateChange(index, e) {
@@ -45,7 +57,7 @@ export default class ExpEdit extends Component {
     }))
   }
 
-  onNameChange(index, e) {
+  onTypeChange(index, e) {
     const idx = e.detail.value
     const type = types[idx]
     this.setState(update(this.state, {
@@ -57,6 +69,25 @@ export default class ExpEdit extends Component {
         }
       }
     }))
+  }
+
+  handleChange = (key, idx, e) => {
+    const val = e.target.value
+    this.setState({
+      experiences: update(this.state.experiences, {
+        [idx]: {
+          [key]: {
+            $set: val
+          }
+        }
+      })
+    })
+  }
+
+  handleOtherChange = (e) => {
+    this.setState({
+      other: e.target.value
+    })
   }
 
   handleAdd = () => {
@@ -82,6 +113,26 @@ export default class ExpEdit extends Component {
       i = value + '年'
     }
     return i
+  }
+
+  complete() {
+    const { experiences, other } = this.state
+    let actingExperience = {
+      list: experiences,
+      other
+    }
+    api_info_edit({
+      id: this.info.id,
+      actingExperience
+    }).then(res => {
+      if (res.success) {
+        showToast('保存成功')
+        delayToExec(() => Taro.navigateBack())
+        Taro.setStorageSync(USER_MODEL_INFO, Object.assign(this.info, {
+          actingExperience
+        }))
+      }
+    })
   }
 
   config = {
@@ -110,10 +161,10 @@ export default class ExpEdit extends Component {
               </View>
               <View className="form-item">
                 <View className="form-item-label">影片名称</View>
-                <Input value={name} className="form-item-info" />
+                <Input value={name} className="form-item-info" onInput={this.handleChange.bind(this, 'name', idx)} />
                 <View className="form-item-suffix"></View>
               </View>
-              <Picker range={types} value={name} onChange={this.onNameChange.bind(this, idx)}>
+              <Picker range={types} value={name} onChange={this.onTypeChange.bind(this, idx)}>
               <View className="form-item">
                 <View className="form-item-label">类型</View>
                 <View className="form-item-info">{type}</View>
@@ -122,17 +173,17 @@ export default class ExpEdit extends Component {
               </Picker>
               <View className="form-item">
                 <View className="form-item-label">导演</View>
-                <Input value={director} className="form-item-info" />
+                <Input value={director} className="form-item-info" onInput={this.handleChange.bind(this, 'director', idx)} />
                 <View className="form-item-suffix"></View>
               </View>
               <View className="form-item">
                 <View className="form-item-label">饰演角色</View>
-                <Input value={character} className="form-item-info" />
+                <Input value={character} className="form-item-info" onInput={this.handleChange.bind(this, 'character', idx)} />
                 <View className="form-item-suffix"></View>
               </View>
               <View className="form-item">
                 <View className="form-item-label">合作演员</View>
-                <Input value={coActor} className="form-item-info" />
+                <Input value={coActor} className="form-item-info" onInput={this.handleChange.bind(this, 'coActor', idx)} />
                 <View className="form-item-suffix"></View>
               </View>
             </View>
@@ -147,10 +198,10 @@ export default class ExpEdit extends Component {
             <View className="form-item-info"></View>
             <View className="form-item-suffix" />
           </View>
-          <Textarea value={this.state.other}></Textarea>
+          <Textarea value={this.state.other} onInput={this.handleOtherChange} />
           <View className="divider-horizontal" />
         </View>
-        <View className="bottom-btn button">完成</View>
+        <View className="bottom-btn button" onClick={this.complete}>完成</View>
       </View>
     )
   }

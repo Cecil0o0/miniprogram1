@@ -87,7 +87,7 @@ export default class Index extends Component {
 
   clickModalCard() {
     Taro.navigateTo({
-      url: '/pages/resume/index'
+      url: '/pages/resume/index?id=0a3305ff-a32c-4f69-86c4-fbdb18208ec3'
     })
   }
 
