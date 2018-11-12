@@ -1,7 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Textarea, Input } from '@tarojs/components'
 import './index.styl'
-import { USER_MODEL_INFO } from '../../lib/constants'
+import { USER_MODEL_INFO, LOGIN_STATUS } from '../../lib/constants'
 import { showToast, delayToExec } from '../../lib/utils'
 import { api_advice_add } from '../../api'
 
@@ -16,11 +16,10 @@ export default class Advice extends Component {
   }
 
   submit() {
-    const info = Taro.getStorageSync(USER_MODEL_INFO)
+    const loginStatus = Taro.getStorageSync(LOGIN_STATUS)
     const { content, contact } = this.state
     api_advice_add({
-      modelId: info.id,
-      openId: 'test',
+      userId: loginStatus.id,
       content,
       contact
     }).then(res => {

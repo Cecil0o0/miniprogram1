@@ -166,7 +166,6 @@ export default class SelfInfo extends Component {
           <View className="inner-wrapper accordion-wrapper">
             {Object.keys(years).map((year, idx) => {
               let everyYears = years[year]
-              console.log(everyYears)
               return (
                 <View
                   className={cn('accordion-item', {

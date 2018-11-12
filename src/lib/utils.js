@@ -45,3 +45,18 @@ export const pick = function pick(obj, arr) {
   arr.forEach(key => o[key] = obj[key])
   return o
 }
+
+export const debounce = function debounce(fn, delay = 50) {
+  let timer = null
+  let context = this
+  return function() {
+    let args = Array.from(arguments)
+    if (timer) {
+      clearTimeout(timer)
+    }
+    timer = setTimeout(() => {
+      fn.apply(context, args)
+      clearTimeout(timer)
+    }, delay)
+  }
+}

@@ -30,7 +30,6 @@ export default class CardEdit1 extends Component {
       success (res) {
         // tempFilePath可以作为img标签的src属性显示图片
         const tempFilePaths = res.tempFilePaths
-        console.log(tempFilePaths)
         if (tempFilePaths.length === count) {
           Taro.setStorageSync(type + '$card-edit-photos', tempFilePaths)
           Taro.navigateTo({

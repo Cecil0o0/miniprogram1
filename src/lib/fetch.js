@@ -1,4 +1,5 @@
 import Taro from '@tarojs/taro'
+import { LOGIN_STATUS } from '../lib/constants'
 
 export default function({ url, data, method = 'GET', dataType = 'json' } = {}) {
   return Taro.request({
@@ -7,7 +8,8 @@ export default function({ url, data, method = 'GET', dataType = 'json' } = {}) {
     method,
     dataType,
     header: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'token': Taro.getStorageSync(LOGIN_STATUS).token
     }
   }).then(res => res.data).then(res => {
     if (!res.success) {

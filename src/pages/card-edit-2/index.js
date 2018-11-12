@@ -249,7 +249,6 @@ export default class CardEdit2 extends Component {
     // 二维码
     ctx.fillRect(760, 771, 301, 301)
     // 图片1
-    console.log(imgs)
     imgs[0] && ctx.drawImage(imgs[0], 1075, 6, 348, 349)
     imgs[1] && ctx.drawImage(imgs[1], 1433, 6, 348, 349)
     imgs[2] && ctx.drawImage(imgs[2], 1791, 6, 348, 349)

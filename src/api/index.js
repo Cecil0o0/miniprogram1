@@ -1,4 +1,5 @@
 import fetch from '../lib/fetch'
+import { SIZE } from '../lib/constants'
 
 /* eslint-disable-next-line */
 const prefix = URL_PREFIX + '/v1'
@@ -36,5 +37,41 @@ export const api_get_uploads = ids => {
   return fetch({
     url: `${prefix}/upload/${ids}`,
     method: 'GET'
+  })
+}
+
+export const api_login = code => {
+  return fetch({
+    url: `${prefix}/login`,
+    method: 'POST',
+    data: { code }
+  })
+}
+
+export const api_home_models = ({ type = 'hot', page = 1, size = SIZE}) => {
+  return fetch({
+    url: `${prefix}/model/${type}`,
+    data: {
+      page,
+      size
+    }
+  })
+}
+
+export const api_model_sponsor = (modelId) => {
+  return fetch({
+    url: `${prefix}/hf/sponsor`,
+    data: {
+      modelId
+    }
+  })
+}
+
+export const api_model_hot = (modelId) => {
+  return fetch({
+    url: `${prefix}/hf/hot`,
+    data: {
+      modelId
+    }
   })
 }

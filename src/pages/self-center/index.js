@@ -2,7 +2,7 @@ import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
 import './index.styl'
 import { api_info } from '../../api'
-import { USER_MODEL_INFO } from '../../lib/constants'
+import { USER_MODEL_INFO, LOGIN_STATUS } from '../../lib/constants'
 import AttentionPng from '../../images/attention.png'
 import BasicInfoPng from '../../images/basic_info.png'
 import PosterPng from '../../images/upload.png'
@@ -42,7 +42,9 @@ export default class SelfCenter extends Component {
       subscribe: 225874,
       intro:
         '坚持不一定会胜利，放弃不一定是认输，人生有很多时候需要的不仅仅是执着，更是回眸一笑的洒脱，加油！'
-    }
+    },
+    isLogin: false,
+    roleKey: 'normal'
   }
 
   items = [
@@ -111,14 +113,30 @@ export default class SelfCenter extends Component {
   componentWillMount() {}
 
   componentDidMount() {
-    api_info('0a3305ff-a32c-4f69-86c4-fbdb18208ec3').then(res => {
-      if (res.success) {
-        this.setState({
-          info: res.data
-        })
-        Taro.setStorageSync(USER_MODEL_INFO, res.data)
-      }
-    })
+    const loginStatus = Taro.getStorageSync(LOGIN_STATUS)
+    if (loginStatus.login) {
+      this.setState({
+        roleKey: loginStatus.role.roleKey,
+        isLogin: true
+      }, () => {
+        if (this.state.roleKey === 'model') {
+          api_info(loginStatus.id).then(res => {
+            if (res.success) {
+              this.setState({
+                info: res.data
+              })
+              Taro.setStorageSync(USER_MODEL_INFO, res.data)
+            }
+          })
+        } else {
+          console.log('非model用户')
+        }
+      })
+    } else {
+      this.setState({
+        isLogin: false
+      })
+    }
   }
 
   componentWillUnmount() {}
@@ -152,6 +170,12 @@ export default class SelfCenter extends Component {
   }
 
   render() {
+    if (!this.state.isLogin) {
+      return <View>未登录</View>
+    }
+    if (this.state.roleKey !== 'model') {
+      return <View>不是模特用户</View>
+    }
     const { cover, avatar, name, popularity, subscribe, intro, sex } = this.state.info
     return (
       <View className="self-center">

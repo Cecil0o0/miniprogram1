@@ -1,76 +1,69 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Swiper, Icon, SwiperItem, Text, Image } from '@tarojs/components'
+import update from 'immutability-helper'
 import cn from 'classnames'
-import { api_banners } from '../../api'
+import { api_banners, api_login } from '../../api'
 import './index.styl'
 import ModelCard from '../../components/model-card/index'
 import Loadmore from '../../components/loadmore/index'
-import Banner1 from '../../images/banner1.png'
-import Model2Png from '../../images/model2.jpeg'
-import Model3Png from '../../images/model3.jpeg'
-import Model4Png from '../../images/model4.jpeg'
+import { LOGIN_STATUS } from '../../lib/constants'
+import { api_home_models } from '../../api'
+import { SIZE } from '../../lib/constants'
+import HeartPng from '../../images/heart.png'
+import MoneyBagPng from '../../images/money_bag.png'
+
+const genState = () => { return JSON.parse(JSON.stringify({
+  swipers: [],
+  // tab拦
+  currTab: 'sponsor',
+  sponsorModels: [],
+  hotModels: [],
+  hotPage: 1,
+  sponsorPage: 1,
+  sponsorLoaded: false,
+  hotLoaded: false
+})) }
 
 export default class Index extends Component {
+  constructor() {
+    super(...arguments)
+    this.initState = genState()
+    this.state = genState()
+  }
+
   config = {
     navigationBarTitleText: '首页',
     enablePullDownRefresh: true
   }
 
-  state = {
-    swipers: [
-      {
-        src: Banner1,
-        jump: {
-          type: 'web',
-          url: ''
+  loginPromise = new Promise(resolve => this.loginPromiseResolver = resolve)
+
+  getModels({ page = 1, type = 'sponsor' } = {}) {
+    return api_home_models({ page, type }).then(res => {
+      if (res.success) {
+        let list = res.data.list
+        let nextState = {
+          [`${type}Models`]: update(this.state[`${type}Models`], {
+            $push: res.data.list.map(item => ({
+              id: item.id,
+              num: type === 'sponsor' ? item.subscribe : item.popularity,
+              imgSrc: item.cover,
+              name: item.name,
+              height: item.height,
+              weight: item.weight,
+              text: type === 'sponsor' ? '赞助值' : '人气值',
+              icon: type === 'sponsor' ? MoneyBagPng : HeartPng
+            }))
+          })
         }
-      },
-      {
-        src: Banner1,
-        jump: {
-          type: 'web',
-          url: ''
+        if (list.length < SIZE) {
+          nextState[`${type}Loaded`] = true
+        } else {
+          nextState[`${type}Page`] = this.state[`${type}Page`] + 1
         }
-      },
-      {
-        src: Banner1,
-        jump: {
-          type: 'web',
-          url: ''
-        }
+        this.setState(nextState)
       }
-    ],
-    currTab: 1,
-    models: [
-      {
-        popularity: 200000,
-        imgSrc: Model2Png,
-        name: '某某某',
-        height: 169,
-        weight: 51
-      },
-      {
-        popularity: 50000,
-        imgSrc: Model2Png,
-        name: '某某某',
-        height: 180,
-        weight: 70
-      },
-      {
-        popularity: 100000,
-        imgSrc: Model3Png,
-        name: '某某某',
-        height: 169,
-        weight: 66
-      },
-      {
-        popularity: 150000,
-        imgSrc: Model4Png,
-        name: '某某某',
-        height: 160,
-        weight: 55
-      }
-    ]
+    })
   }
 
   handleClick(index) {
@@ -79,15 +72,24 @@ export default class Index extends Component {
     })
   }
 
+  onReachBottom() {
+    let { currTab } = this.state
+    !this.state[`${currTab}Loaded`] && this.getModels({ page: this.state[`${currTab}Page`], type: currTab })
+  }
+
+  onPullDownRefresh() {
+    this.init()
+  }
+
   gotoSearch() {
     Taro.navigateTo({
       url: '/pages/search/index'
     })
   }
 
-  clickModalCard() {
+  clickModalCard(model) {
     Taro.navigateTo({
-      url: '/pages/resume/index?id=0a3305ff-a32c-4f69-86c4-fbdb18208ec3'
+      url: `/pages/resume/index?id=${model.id}`
     })
   }
 
@@ -97,8 +99,6 @@ export default class Index extends Component {
     })
   }
 
-  componentWillMount() {}
-
   componentDidMount() {
     let redirect = this.$router.params.redirect
     if (redirect) {
@@ -106,12 +106,54 @@ export default class Index extends Component {
         url: redirect
       })
     }
-    // 获取banner图
-    this.getBanners()
+    this.init()
+  }
+
+  init() {
+    this.loginPromise.then(() => {
+      this.setState(genState(), () => {
+        // 获取banner图
+        // 获取赞助榜和人气榜
+        Promise.all([this.getBanners(), this.getModels({ type: 'hot' }), this.getModels({ type: 'sponsor' })]).then(Taro.stopPullDownRefresh)
+      })
+    })
+  }
+
+  login() {
+    Taro.login({
+      success: (res) => {
+        if (res.code) {
+          api_login(res.code).then(res => {
+            if (res.success) {
+              Taro.setStorageSync(LOGIN_STATUS, {
+                login: true,
+                ...res.data
+              })
+            }
+            // 无论成功与否，只要尝试过登陆即可
+            this.loginPromiseResolver()
+          })
+        } else {
+          console.error('登录失败！' + res.errMsg)
+          this.loginPromiseResolver()
+        }
+      },
+      fail: this.loginPromiseResolver
+    })
+  }
+
+  checkSession() {
+    // 为了兼容真机调试登陆，需要先判断本地登陆状态
+    const loginStatus = Taro.getStorageSync(LOGIN_STATUS) || {}
+    if (!loginStatus.login) {
+      this.login()
+    } else {
+      Taro.checkSession().then(this.loginPromiseResolver).catch(this.login.bind(this))
+    }
   }
 
   getBanners() {
-    api_banners().then(res => {
+    return api_banners().then(res => {
       if (res.success) {
         this.setState({
           swipers: res.data
@@ -120,13 +162,13 @@ export default class Index extends Component {
     })
   }
 
-  componentWillUnmount() {}
-
-  componentDidShow() {}
-
-  componentDidHide() {}
+  componentDidShow() {
+    this.checkSession()
+  }
 
   render() {
+    const { currTab, hotLoaded, sponsorLoaded } = this.state
+    const showLoadMore = currTab === 'hot' && !hotLoaded || currTab === 'sponsor' && !sponsorLoaded
     return (
       <View className="index">
         <View className="search_input" onClick={this.gotoSearch}>
@@ -147,24 +189,24 @@ export default class Index extends Component {
         <View className="tabs">
           <View
             className={cn({
-              active: this.state.currTab === 1
+              active: this.state.currTab === 'sponsor'
             })}
-            onClick={this.handleClick.bind(this, 1)}
+            onClick={this.handleClick.bind(this, 'sponsor')}
           >
             <Text>赞助榜</Text>
           </View>
           <View
             className={cn({
-              active: this.state.currTab === 2
+              active: this.state.currTab === 'hot'
             })}
-            onClick={this.handleClick.bind(this, 2)}
+            onClick={this.handleClick.bind(this, 'hot')}
           >
             <Text>人气榜</Text>
           </View>
         </View>
         <View className="model-cards-wrapper">
-          {this.state.currTab === 1
-            ? this.state.models.map((model, key) => {
+          {this.state.currTab === 'sponsor'
+            ? this.state.sponsorModels.map((model, key) => {
                 return (
                   <ModelCard
                     model={Object.assign(
@@ -178,7 +220,7 @@ export default class Index extends Component {
                   />
                 )
               })
-            : this.state.models.map((model, key) => {
+            : this.state.hotModels.map((model, key) => {
                 return (
                   <ModelCard
                     model={Object.assign(
@@ -193,7 +235,7 @@ export default class Index extends Component {
                 )
               })}
         </View>
-        <Loadmore />
+        { showLoadMore && <Loadmore /> }
       </View>
     )
   }

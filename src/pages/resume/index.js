@@ -1,29 +1,21 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Swiper, SwiperItem, Image, Text, Button } from '@tarojs/components'
 import cn from 'classnames'
-import Loadmore from '../../components/loadmore'
 import SelfInfo from '../../components/self-info'
 import './index.styl'
 import HeartPng from '../../images/heart.png'
 import MoneyBagPng from '../../images/money_bag.png'
-import PlusPng from '../../images/white_plus.png'
-import EmailPng from '../../images/white_email.png'
 import FemalePng from '../../images/female.png'
 import MalePng from '../../images/male.png'
 import IdVerify2Png from '../../images/verify_icon.png'
-import VoicePng from '../../images/voice.png'
-import RectPng from '../../images/rect.png'
-import ChatPng from '../../images/chat.png'
-import BluePersonPng from '../../images/blue_person.png'
-import MenuPng from '../../images/menu.png'
 import NotDonatePng from '../../images/resume_not_donate.png'
 import DonatePng from '../../images/resume_donate.png'
 import NotPopuPng from '../../images/resume_not_popu.png'
 import PopuPng from '../../images/resume_popu.png'
 import SharePng from '../../images/resume_share.png'
 import MobileWhitePng from '../../images/self_center_mobile_white.png'
-import { api_info } from '../../api'
-import { getUploadResAbsAddress } from '../../lib/utils'
+import * as api from '../../api'
+import { debounce } from '../../lib/utils'
 
 export default class Resume extends Component {
   constructor(props) {
@@ -120,13 +112,36 @@ export default class Resume extends Component {
 
   componentDidMount() {
     const id = this.$router.params.id
-    api_info(id).then(res => {
+    api.api_info(id).then(res => {
       if (res.success) {
         this.setState({
           info: res.data
         })
       }
     })
+  }
+
+  debouncer = debounce((type) => {
+    api[`api_model_${type}`](this.state.info.id).then(res => {
+      if(res.success) {
+        Taro.showToast({
+          title: type === 'hot' ? '点赞成功' : '打气成功'
+        })
+      }
+    })
+  }, 200)
+
+  touchStart(type) {
+    this.setState({
+      [`${type}ing`]: true
+    })
+  }
+
+  touchEnd(type) {
+    this.setState({
+      [`${type}ing`]: false
+    })
+    this.debouncer(type)
   }
 
   render() {
@@ -222,9 +237,8 @@ export default class Resume extends Component {
                   <View
                     key={key}
                     className="photo"
-                    style={{ backgroundImage: `url("${item.src}")` }}
                     onClick={this.previewPhotos}
-                  />
+                  ><View className="img" style={{ backgroundImage: `url("${item.src}")` }}/></View>
                 )
               })}
             </View>
@@ -232,8 +246,12 @@ export default class Resume extends Component {
           </View>
         )}
         <View className="menu">
-          <Image src={DonatePng} />
-          <Image src={PopuPng} />
+          <Image className={cn({
+            active: this.state.sponsoring
+          })} src={this.state.sponsoring ? DonatePng : NotDonatePng} onTouchStart={this.touchStart.bind(this, 'sponsor')} onTouchEnd={this.touchEnd.bind(this,'sponsor')} />
+          <Image className={cn({
+            active: this.state.hoting
+          })} src={this.state.hoting ? PopuPng : NotPopuPng} onTouchStart={this.touchStart.bind(this, 'hot')} onTouchEnd={this.touchEnd.bind(this, 'hot')} />
           <Button className="transparent" open-type="share"><Image src={SharePng} /></Button>
         </View>
       </View>
