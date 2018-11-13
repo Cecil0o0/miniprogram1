@@ -1,5 +1,6 @@
 import fetch from '../lib/fetch'
-import { SIZE } from '../lib/constants'
+import { SIZE, LOGIN_STATUS } from '../lib/constants'
+import Taro from '@tarojs/taro'
 
 /* eslint-disable-next-line */
 const prefix = URL_PREFIX + '/v1'
@@ -58,20 +59,54 @@ export const api_home_models = ({ type = 'hot', page = 1, size = SIZE}) => {
   })
 }
 
-export const api_model_sponsor = (modelId) => {
+export const api_model_hot = (modelId) => {
   return fetch({
-    url: `${prefix}/hf/sponsor`,
+    url: `${prefix}/hf/hot`,
     data: {
       modelId
     }
   })
 }
 
-export const api_model_hot = (modelId) => {
+// 关注
+export const api_user_attention = ({ modelId }) => {
+  const userId = Taro.getStorageSync(LOGIN_STATUS).id
   return fetch({
-    url: `${prefix}/hf/hot`,
+    url: `${prefix}/hf/addAttention`,
+    method: 'POST',
     data: {
-      modelId
+      modelId,
+      userId
+    }
+  })
+}
+
+// 取消关注
+export const api_user_remove_attention = (modelId) => {
+  const userId = Taro.getStorageSync(LOGIN_STATUS).id
+  return fetch({
+    url: `${prefix}/hf/removeAttention`,
+    method: 'POST',
+    data: {
+      modelId,
+      userId
+    }
+  })
+}
+
+export const api_user_if_follow = (modelId) => {
+  const userId = Taro.getStorageSync(LOGIN_STATUS).id
+  return fetch({
+    url: `${prefix}/hf/getIfAttention?userId=${userId}&modelId=${modelId}`,
+  })
+}
+
+export const api_get_partical_models = (ids) => {
+  return fetch({
+    url: `${prefix}/models`,
+    method: 'POST',
+    data: {
+      ids
     }
   })
 }

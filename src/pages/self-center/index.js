@@ -26,7 +26,8 @@ import VerifyWhitePng from '../../images/self_center_verify_white.png'
 
 export default class SelfCenter extends Component {
   config = {
-    navigationBarTitleText: '个人中心'
+    navigationBarTitleText: '个人中心',
+    enablePullDownRefresh: true
   }
 
   state = {
@@ -110,9 +111,15 @@ export default class SelfCenter extends Component {
     }
   ]
 
-  componentWillMount() {}
-
   componentDidMount() {
+    this.init()
+  }
+
+  onPullDownRefresh() {
+    this.init()
+  }
+
+  init() {
     const loginStatus = Taro.getStorageSync(LOGIN_STATUS)
     if (loginStatus.login) {
       this.setState({
@@ -127,6 +134,7 @@ export default class SelfCenter extends Component {
               })
               Taro.setStorageSync(USER_MODEL_INFO, res.data)
             }
+            Taro.stopPullDownRefresh()
           })
         } else {
           console.log('非model用户')
@@ -139,16 +147,12 @@ export default class SelfCenter extends Component {
     }
   }
 
-  componentWillUnmount() {}
-
   componentDidShow() {
     const info = Taro.getStorageSync(USER_MODEL_INFO)
     if (info) {
       this.setState({ info })
     }
   }
-
-  componentDidHide() {}
 
   clickAvatar(e) {
     e.stopPropagation()

@@ -4,6 +4,7 @@ import './index.styl'
 import HeartPng from '../../images/heart.png'
 import MoneyBagPng from '../../images/money_bag.png'
 import { USER_MODEL_INFO } from '../../lib/constants'
+import { api_get_partical_models, api_user_remove_attention } from '../../api'
 
 export default class Attention extends Component {
   constructor() {
@@ -42,20 +43,46 @@ export default class Attention extends Component {
     navigationBarTitleText: '关注的人'
   }
 
-  componentWillMount() {}
-
-  componentDidMount = () => {
+  componentWillMount() {
     const info = Taro.getStorageSync(USER_MODEL_INFO)
-    this.setState({
-      list: info.attentions || []
+    this.info = info
+    api_get_partical_models(info.attentions || []).then(res => {
+      if (res.success) {
+        this.setState({
+          list: res.data
+        })
+      }
     })
   }
 
-  componentWillUnmount() {}
-
-  componentDidShow() {}
-
-  componentDidHide() {}
+  removeAttention(id) {
+    wx.showModal({
+      title: '提示',
+      content: '是否取消关注',
+      success: res => {
+        if (res.confirm) {
+          api_user_remove_attention(id).then(res => {
+            if(res.success) {
+              Taro.showToast({
+                title: '已取消关注',
+                icon: 'none',
+                mask: true,
+                duration: 1000
+              })
+              let index = this.state.list.findIndex(item => item.id === id)
+              this.state.list.splice(index, 1)
+              this.setState({
+                list: this.state.list
+              })
+              Taro.setStorageSync(USER_MODEL_INFO, Object.assign({}, this.info, {
+                attentions: this.state.list.map(item => item.id)
+              }))
+            }
+          })
+        }
+      }
+    })
+  }
 
   render() {
     return (
@@ -63,9 +90,9 @@ export default class Attention extends Component {
         {this.state.list.map((item, key) => {
           return (
             <View key={key} className="item-wrapper">
-              <View className="cancel-btn">取消关注</View>
+              <View className="cancel-btn" onClick={this.removeAttention.bind(this, item.id)}>取消关注</View>
               <View className="avatar-wrapper">
-                <Image src="" />
+                <Image src={item.avatar} />
               </View>
               <View className="info-wrapper">
                 <View className="name">{item.name}</View>

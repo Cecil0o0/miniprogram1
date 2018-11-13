@@ -16,6 +16,7 @@ import SharePng from '../../images/resume_share.png'
 import MobileWhitePng from '../../images/self_center_mobile_white.png'
 import * as api from '../../api'
 import { debounce } from '../../lib/utils'
+import { LOGIN_STATUS } from '../../lib/constants';
 
 export default class Resume extends Component {
   constructor(props) {
@@ -68,7 +69,8 @@ export default class Resume extends Component {
         bindMobile: {
           number: ''
         }
-      }
+      },
+      isAttention: true
     }
   }
 
@@ -80,6 +82,16 @@ export default class Resume extends Component {
 
   config = {
     navigationBarTitleText: '个人简历'
+  }
+
+  getIfAttention() {
+    api.api_user_if_follow(this.state.info.id).then(res => {
+      if (res.success) {
+        this.setState({
+          isAttention: res.data
+        })
+      }
+    })
   }
 
   makePhoneCall (phoneNumber) {
@@ -116,7 +128,7 @@ export default class Resume extends Component {
       if (res.success) {
         this.setState({
           info: res.data
-        })
+        }, this.getIfAttention)
       }
     })
   }
@@ -142,6 +154,21 @@ export default class Resume extends Component {
       [`${type}ing`]: false
     })
     this.debouncer(type)
+  }
+
+  addAttention() {
+    const userId = Taro.getStorageSync(LOGIN_STATUS).id
+    const modelId = this.state.info.id
+    api.api_user_attention({ userId, modelId }).then(res => {
+      if (res.success) {
+        Taro.showToast({
+          title: '关注成功'
+        })
+        this.setState({
+          isAttention: true
+        })
+      }
+    })
   }
 
   render() {
@@ -247,11 +274,9 @@ export default class Resume extends Component {
         )}
         <View className="menu">
           <Image className={cn({
-            active: this.state.sponsoring
-          })} src={this.state.sponsoring ? DonatePng : NotDonatePng} onTouchStart={this.touchStart.bind(this, 'sponsor')} onTouchEnd={this.touchEnd.bind(this,'sponsor')} />
-          <Image className={cn({
             active: this.state.hoting
-          })} src={this.state.hoting ? PopuPng : NotPopuPng} onTouchStart={this.touchStart.bind(this, 'hot')} onTouchEnd={this.touchEnd.bind(this, 'hot')} />
+          })} src={this.state.hoting ? DonatePng : NotDonatePng} onTouchStart={this.touchStart.bind(this, 'hot')} onTouchEnd={this.touchEnd.bind(this,'hot')} />
+          <Image src={this.state.isAttention ? PopuPng : NotPopuPng} onClick={this.addAttention} />
           <Button className="transparent" open-type="share"><Image src={SharePng} /></Button>
         </View>
       </View>
