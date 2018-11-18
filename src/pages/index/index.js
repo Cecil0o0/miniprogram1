@@ -115,6 +115,8 @@ export default class Index extends Component {
         // 获取banner图
         // 获取赞助榜和人气榜
         Promise.all([this.getBanners(), this.getModels({ type: 'hot' }), this.getModels({ type: 'sponsor' })]).then(Taro.stopPullDownRefresh)
+        // 打印登录状态
+        console.log('登录状态', Taro.getStorageSync(LOGIN_STATUS))
       })
     })
   }

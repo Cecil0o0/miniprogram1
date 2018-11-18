@@ -39,10 +39,10 @@ export default class ViewPoster extends Component {
 
   upload() {
     promisifyUpload(this.state.info.cover).then(res => {
-      const { id, cover } = this.state.info
+      const { id } = this.state.info
       api_info_edit({
         id,
-        cover
+        cover: res.data
       }).then(res => {
         if (res.success) {
           Taro.setStorageSync(USER_MODEL_INFO, this.state.info)

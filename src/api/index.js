@@ -110,3 +110,9 @@ export const api_get_partical_models = (ids) => {
     }
   })
 }
+
+export const api_models_search = (text, page, size = SIZE) => {
+  return fetch({
+    url: `${prefix}/search/models?text=${text}&page=${page}&size=${size}`
+  })
+}

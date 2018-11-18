@@ -39,10 +39,10 @@ export default class ViewAvatar extends Component {
 
   upload() {
     promisifyUpload(this.state.info.avatar).then(res => {
-      const { id, avatar } = this.state.info
+      const { id } = this.state.info
       api_info_edit({
         id,
-        avatar
+        avatar: res.data
       }).then(res => {
         if (res.success) {
           Taro.setStorageSync(USER_MODEL_INFO, this.state.info)

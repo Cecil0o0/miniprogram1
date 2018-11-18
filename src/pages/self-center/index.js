@@ -180,7 +180,7 @@ export default class SelfCenter extends Component {
     if (this.state.roleKey !== 'model') {
       return <View>不是模特用户</View>
     }
-    const { cover, avatar, name, popularity, subscribe, intro, sex } = this.state.info
+    const { cover, avatar, name, popularity, subscribe, intro, sex, bindMobile } = this.state.info
     return (
       <View className="self-center">
         <View
@@ -205,7 +205,7 @@ export default class SelfCenter extends Component {
             <View className="divider-vertical" />
             <View className="btn">
               <Image src={MobileWhitePng} className="icon" />
-              <Text>138****6688</Text>
+              <Text>{bindMobile.number}</Text>
             </View>
           </View>
           <View className="second">
