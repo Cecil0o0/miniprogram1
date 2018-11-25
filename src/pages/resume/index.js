@@ -207,7 +207,7 @@ export default class Resume extends Component {
               </View>
             </View>
             <View className="second">
-              <View className="btn-group" onClick={this.makePhoneCall.bind(this, mobile)}>
+              <View className="btn-group" onClick={this.makePhoneCall.bind(this, info.bindMobile.number)}>
                 <Image src={MobileWhitePng} className="btn" />
                 <View className="divider-vertical" />
                 <Text className="mobile">
