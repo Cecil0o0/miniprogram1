@@ -10,21 +10,9 @@ import { showToast, delayToExec } from '../../lib/utils'
 import { USER_MODEL_INFO } from '../../lib/constants'
 
 export default class ExpEdit extends Component {
-  constructor() {
-    super(...arguments)
-    this.state = {
-      experiences: [
-        {
-          year: 2013,
-          name: '非诚勿扰',
-          type: '电影',
-          director: '冯小刚',
-          character: '王嘉涵',
-          coActor: '葛优 舒淇 郑恺'
-        }
-      ],
-      other: `2013年，范冰冰蝉联2014福布斯中国名人榜第一位，5月23日，布莱恩·辛格导演，休·杰克曼；詹姆斯·麦卡沃伊；迈克尔·法斯宾德主演的电影《X战警：逆转未来》全球同步上映，范冰冰在其中饰演“闪烁女Blink”一角。`
-    }
+  state = {
+    experiences: [],
+    other: ''
   }
 
   componentDidMount() {
@@ -151,7 +139,7 @@ export default class ExpEdit extends Component {
                 <View className="close-btn" onClick={this.deleteExp.bind(this, idx)}>
                   <Image src={RabbishPng} />
                 </View>
-                <Picker mode="date" fields="year" value={year} onChange={this.onDateChange.bind(this, idx)}>
+                <Picker mode="date" fields="year" start="1970-01-01" end="2019-01-01" value={year} onChange={this.onDateChange.bind(this, idx)}>
                   <View className="form-item year">
                     <View className="form-item-label">{year}年</View>
                     <View className="form-item-info">选择年份</View>

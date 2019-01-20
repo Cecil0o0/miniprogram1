@@ -1,5 +1,6 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Input, Picker, Textarea, Image } from '@tarojs/components'
+import update from 'immutability-helper'
 import QfModal from '../../components/modal'
 import './index.styl'
 import CaretRightPng from '../../images/caret_right.png'
@@ -125,17 +126,6 @@ export default class InfoBasicEdit extends Component {
     })
   }
 
-  onClickFormItem(key) {
-    const label = this.state.label[key]
-    let value = this.dataTrans(key, this.state.info[key])
-    this.setState({
-      inputPlaceholder: `请输入${label}`,
-      inputValue: value,
-      inputName: key,
-      modalVisible: true
-    })
-  }
-
   dataTrans(key, value) {
     let i = value
     if (key === 'specialities') {
@@ -199,6 +189,32 @@ export default class InfoBasicEdit extends Component {
     })
   }
 
+  handleChange(key, e) {
+    this.setState({
+      info: update(this.state.info, {
+        [key]: {
+          $set: e.target.value
+        }
+      })
+    })
+  }
+
+  handleArrayChange(key, e) {
+    let arr = []
+    try {
+      arr = e.target.value.split(',')
+    } catch(e) {
+      console.log(e)
+    }
+    this.setState({
+      info: update(this.state.info, {
+        [key]: {
+          $set: arr
+        }
+      })
+    })
+  }
+
   render() {
     const { info, inputPlaceholder } = this.state
     // 年龄
@@ -215,12 +231,14 @@ export default class InfoBasicEdit extends Component {
     })
     return (
       <View className="info-basic-edit">
-        <View className="form-item" onClick={this.onClickFormItem.bind(this, 'name')}>
+        <View className="form-item">
           <View className="form-item-label">姓名</View>
-          <View className="form-item-info">{this.dataTrans('name', info['name'])}</View>
-          <View className="form-item-suffix">
-            <Image src={CaretRightPng} />
-          </View>
+          <Input
+            className="form-item-info"
+            value={info.name}
+            onInput={this.handleChange.bind(this, 'name')}
+          />
+          <View className="form-item-suffix" />
         </View>
         <Picker range={ages} value={age_value} onChange={this.onAgeChange}>
           <View className="form-item">
@@ -267,26 +285,32 @@ export default class InfoBasicEdit extends Component {
             </View>
           </View>
         </Picker>
-        <View className="form-item" onClick={this.onClickFormItem.bind(this, 'school')}>
+        <View className="form-item">
           <View className="form-item-label">院校</View>
-          <View className="form-item-info">{this.dataTrans('school', info['school'])}</View>
-          <View className="form-item-suffix">
-            <Image src={CaretRightPng} />
-          </View>
+          <Input
+            className="form-item-info"
+            value={info.school}
+            onInput={this.handleChange.bind(this, 'school')}
+          />
+          <View className="form-item-suffix" />
         </View>
-        <View className="form-item" onClick={this.onClickFormItem.bind(this, 'exp')}>
+        <View className="form-item">
           <View className="form-item-label">经验</View>
-          <View className="form-item-info">{this.dataTrans('exp', info['exp'])}</View>
-          <View className="form-item-suffix">
-            <Image src={CaretRightPng} />
-          </View>
+          <Input
+            className="form-item-info"
+            value={info.exp}
+            onInput={this.handleChange.bind(this, 'exp')}
+          />
+          <View className="form-item-suffix" />
         </View>
-        <View className="form-item" onClick={this.onClickFormItem.bind(this, 'specialities')}>
+        <View className="form-item">
           <View className="form-item-label">特长</View>
-          <View className="form-item-info">{this.dataTrans('specialities', info['specialities'])}</View>
-          <View className="form-item-suffix">
-            <Image src={CaretRightPng} />
-          </View>
+          <Input
+            className="form-item-info"
+            value={info.specialities.join(',')}
+            onInput={this.handleArrayChange.bind(this, 'specialities')}
+          />
+          <View className="form-item-suffix" />
         </View>
         <View className="form-item flex-start">
           <View className="form-item-label">介绍</View>

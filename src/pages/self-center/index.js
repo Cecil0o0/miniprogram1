@@ -137,7 +137,7 @@ export default class SelfCenter extends Component {
             Taro.stopPullDownRefresh()
           })
         } else {
-          console.log('非model用户')
+          console.log('非模特用户')
         }
       })
     } else {

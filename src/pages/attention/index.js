@@ -18,22 +18,6 @@ export default class Attention extends Component {
           popularity: 1258,
           subscribe: 225874,
           intro: '坚持不一定会胜利，放弃不一定是认输，人生有很多时候需要的不仅仅是执着，更是回眸一笑的洒脱，加油！'
-        },
-        {
-          id: 0,
-          avatar: 'https://wx4.sinaimg.cn/orj360/96a79eebgy1fpo3ig1w9qj20c80c83zr.jpg',
-          name: '某某某',
-          popularity: 1258,
-          subscribe: 225874,
-          intro: '坚持不一定会胜利，放弃不一定是认输，人生有很多时候需要的不仅仅是执着，更是回眸一笑的洒脱，加油！'
-        },
-        {
-          id: 0,
-          avatar: 'https://wx4.sinaimg.cn/orj360/96a79eebgy1fpo3ig1w9qj20c80c83zr.jpg',
-          name: '某某某',
-          popularity: 1258,
-          subscribe: 225874,
-          intro: '坚持不一定会胜利，放弃不一定是认输，人生有很多时候需要的不仅仅是执着，更是回眸一笑的洒脱，加油！'
         }
       ]
     }
@@ -48,9 +32,13 @@ export default class Attention extends Component {
     this.info = info
     api_get_partical_models(info.attentions || []).then(res => {
       if (res.success) {
-        this.setState({
-          list: res.data
-        })
+        if (res.data.length) {
+          this.setState({
+            list: res.data
+          })
+        } else {
+          showToast('无数据', 'none')
+        }
       }
     })
   }

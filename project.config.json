@@ -1,5 +1,5 @@
 {
-	"miniprogramRoot": "./dist",
+	"miniprogramRoot": "dist/",
 	"projectname": "miniprogram1",
 	"description": "模特信息管理",
 	"appid": "wxa324150d4ca3f515",

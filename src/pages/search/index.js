@@ -5,7 +5,7 @@ import LoadMore from '../../components/loadmore'
 import './index.styl'
 import { SEARCH_TAGS, SIZE } from '../../lib/constants'
 import { api_models_search } from '../../api'
-import { debounce } from '../../lib/utils'
+import { debounce, showToast } from '../../lib/utils'
 import filters from '../../lib/filter'
 import update from 'immutability-helper';
 
@@ -47,14 +47,18 @@ export default class Index extends Component {
     const { searchText, page, size, list } = this.state
     api_models_search(searchText.trim(), page, size).then(res => {
       if (res.success) {
-        let updateState = {
-          list: update(page === 1 ? [] : list, {
-            $push: res.data.map(item => filters.modelCardDataFilter(item, 'hot'))
-          }),
-          page: page + 1,
-          isDone: page === 1 ? false : res.data.length < size
+        if (res.data.length) {
+          let updateState = {
+            list: update(page === 1 ? [] : list, {
+              $push: res.data.map(item => filters.modelCardDataFilter(item, 'hot'))
+            }),
+            page: page + 1,
+            isDone: page === 1 ? false : res.data.length < size
+          }
+          this.setState(updateState)
+        } else {
+          showToast('无数据', 'none')
         }
-        this.setState(updateState)
       }
     })
   }

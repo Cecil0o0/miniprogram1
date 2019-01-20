@@ -106,7 +106,7 @@ export default class IdVerify extends Component {
     return (
       <View className="page-id-verify">
         <View>
-          <View className="form-item" onClick={this.onClickFormItem.bind(this, 'realName')}>
+          <View className="form-item">
             <View className="form-item-label">真实姓名</View>
             <Input
               className="form-item-info"

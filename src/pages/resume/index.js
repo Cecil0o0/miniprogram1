@@ -16,60 +16,15 @@ import SharePng from '../../images/resume_share.png'
 import MobileWhitePng from '../../images/self_center_mobile_white.png'
 import * as api from '../../api'
 import { debounce } from '../../lib/utils'
-import { LOGIN_STATUS } from '../../lib/constants';
+import { LOGIN_STATUS, USER_MODEL_INFO } from '../../lib/constants';
 
 export default class Resume extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      swipers: [
-        {
-          src: 'http://t2.hddhhn.com/uploads/tu/201610/198/hkgip2b102z.jpg',
-          jump: {
-            type: 'web',
-            url: ''
-          }
-        },
-        {
-          src: 'http://t2.hddhhn.com/uploads/tu/201610/198/hkgip2b102z.jpg',
-          jump: {
-            type: 'web',
-            url: ''
-          }
-        },
-        {
-          src: 'http://t2.hddhhn.com/uploads/tu/201610/198/hkgip2b102z.jpg',
-          jump: {
-            type: 'web',
-            url: ''
-          }
-        }
-      ],
+      swipers: [],
       currTab: 1,
-      info: {
-        id: 0,
-        posters: [],
-        avatar: 'https://wx4.sinaimg.cn/orj360/96a79eebgy1fpo3ig1w9qj20c80c83zr.jpg',
-        name: '某某某',
-        age: 20,
-        height: 168,
-        weight: 45,
-        idVerify: true,
-        sex: 0,
-        popularity: 1258,
-        subscribe: 225874,
-        intro:
-          '坚持不一定会胜利，放弃不一定是认输，人生有很多时候需要的不仅仅是执着，更是回眸一笑的洒脱，加油！',
-        bwh: [45, 48, 52],
-        city: '北京市',
-        school: '北京电影学院',
-        exp: '三年平面模特',
-        specialities: ['唱歌', '跳舞', '书法'],
-        photos: [],
-        bindMobile: {
-          number: ''
-        }
-      },
+      info: {},
       isAttention: true
     }
   }
@@ -116,9 +71,10 @@ export default class Resume extends Component {
     }
   }
 
-  previewPhotos() {
+  previewPhotos(current) {
     wx.previewImage({
-      urls: this.state.info.photos.map(item => item.src)
+      urls: this.state.info.photos.map(item => item.src),
+      current
     })
   }
 
@@ -167,6 +123,10 @@ export default class Resume extends Component {
         this.setState({
           isAttention: true
         })
+        // 更新本地缓存
+        let modelInfo = Taro.getStorageSync(USER_MODEL_INFO)
+        modelInfo.attentions.push(modelId)
+        Taro.setStorageSync(USER_MODEL_INFO, modelInfo)
       }
     })
   }
@@ -264,8 +224,8 @@ export default class Resume extends Component {
                   <View
                     key={key}
                     className="photo"
-                    onClick={this.previewPhotos}
-                  ><View className="img" style={{ backgroundImage: `url("${item.src}")` }}/></View>
+                    onClick={this.previewPhotos.bind(this, item.src)}
+                  ><Image className="img" mode="aspectFit" src={item.src} /></View>
                 )
               })}
             </View>

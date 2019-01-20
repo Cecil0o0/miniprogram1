@@ -16,7 +16,7 @@ export default class ModelCard extends Component {
           <Text>{num}</Text>
         </View>
         <View className="img">
-          <Image src={imgSrc || ''} />
+          <Image src={imgSrc || ''} mode="aspectFit" />
         </View>
         <View className="info">
           <Text>{name}</Text>
