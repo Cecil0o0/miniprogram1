@@ -22,22 +22,24 @@ export default class ViewPoster extends Component {
     })
   }
 
-  selectImg() {
-    Taro.chooseImage({
-      count: 1,
-      sizeType: ['original', 'compressed'],
-      sourceType: ['album', 'camera'],
-      success: res => {
-        this.setState({
-          info: Object.assign({}, this.state.info, {
-            cover: res.tempFilePaths[0]
-          })
-        })
-      }
+  selectImg = () => {
+    return new Promise(resolve => {
+      Taro.chooseImage({
+        count: 1,
+        sizeType: ['original', 'compressed'],
+        sourceType: ['album', 'camera'],
+        success: res => {
+          this.setState({
+            info: Object.assign({}, this.state.info, {
+              cover: res.tempFilePaths[0]
+            })
+          }, resolve)
+        }
+      })
     })
   }
 
-  upload() {
+  upload = () => {
     promisifyUpload(this.state.info.cover).then(res => {
       const { id } = this.state.info
       api_info_edit({
@@ -53,6 +55,10 @@ export default class ViewPoster extends Component {
     })
   }
 
+  selectImgAndUpload() {
+    this.selectImg().then(this.upload)
+  }
+
   cancel() {
     Taro.navigateBack({ delta: 1 })
   }
@@ -60,9 +66,9 @@ export default class ViewPoster extends Component {
   render() {
     return (
       <View className="view-poster">
-        <View style={{ backgroundImage: `url("${this.state.info.cover}")` }} className="img" onClick={this.selectImg} />
+        <View style={{ backgroundImage: `url("${this.state.info.cover}")` }} className="img" />
         <View className="btn-wrapper">
-          <View className="upload-btn" onClick={this.upload}>
+          <View className="upload-btn" onClick={this.selectImgAndUpload}>
             更换封面图片
           </View>
           <View className="confirm-btn" onClick={this.cancel}>

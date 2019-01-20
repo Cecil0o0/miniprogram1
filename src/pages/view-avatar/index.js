@@ -22,23 +22,25 @@ export default class ViewAvatar extends Component {
     })
   }
 
-  selectImg() {
-    Taro.chooseImage({
-      count: 1,
-      sizeType: ['original', 'compressed'],
-      sourceType: ['album', 'camera'],
-      success: res => {
-        this.setState({
-          info: Object.assign({}, this.state.info, {
-            avatar: res.tempFilePaths[0]
-          })
-        })
-      }
+  selectImg = () => {
+    return new Promise(resolve => {
+      Taro.chooseImage({
+        count: 1,
+        sizeType: ['original', 'compressed'],
+        sourceType: ['album', 'camera'],
+        success: res => {
+          this.setState({
+            info: Object.assign({}, this.state.info, {
+              avatar: res.tempFilePaths[0]
+            })
+          }, resolve)
+        }
+      })
     })
   }
 
-  upload() {
-    promisifyUpload(this.state.info.avatar).then(res => {
+  upload = () => {
+    return promisifyUpload(this.state.info.avatar).then(res => {
       const { id } = this.state.info
       api_info_edit({
         id,
@@ -53,6 +55,10 @@ export default class ViewAvatar extends Component {
     })
   }
 
+  selectAndUpload () {
+    this.selectImg().then(this.upload)
+  }
+
   cancel() {
     Taro.navigateBack({ delta: 1 })
   }
@@ -60,8 +66,8 @@ export default class ViewAvatar extends Component {
   render() {
     return (
       <View className="view-avatar">
-        <View style={{backgroundImage: `url("${this.state.info.avatar}")`}} className="img" onClick={this.selectImg} />
-        <View className="upload-btn" onClick={this.upload}>
+        <View style={{backgroundImage: `url("${this.state.info.avatar}")`}} className="img" />
+        <View className="upload-btn" onClick={this.selectAndUpload}>
           更换头像
         </View>
         <View className="confirm-btn" onClick={this.cancel}>

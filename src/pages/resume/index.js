@@ -24,7 +24,9 @@ export default class Resume extends Component {
     this.state = {
       swipers: [],
       currTab: 1,
-      info: {},
+      info: {
+        posters: []
+      },
       isAttention: true
     }
   }
@@ -133,7 +135,7 @@ export default class Resume extends Component {
 
   render() {
     const { info, currTab } = this.state
-    let mobile = info.bindMobile.number ? info.bindMobile.number : '未绑定'
+    let mobile = info.bindMobile && info.bindMobile.number ? info.bindMobile.number : '未绑定'
     return (
       <View className="resume">
         <Swiper
@@ -161,7 +163,7 @@ export default class Resume extends Component {
             <View className="first">
               <View className="name">{info.name}</View>
               <Image className="sex" src={info.sex === 1 ? MalePng : FemalePng} />
-              <View className="id-wrapper" style={{visibility: info.idVerify.isPass ? 'visible' : 'hidden'}}>
+              <View className="id-wrapper" style={{visibility: info.idVerify && info.idVerify.isPass ? 'visible' : 'hidden'}}>
                 <Image src={IdVerify2Png} className="id-verify-icon" />
                 <Text className="verify-text">实名认证</Text>
               </View>

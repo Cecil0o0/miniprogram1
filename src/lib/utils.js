@@ -11,6 +11,7 @@ export const getUploadResAbsAddress = function(name) {
   return `${URL_PREFIX}/upload/${name}`
 }
 
+// 相当于oss的上传接口
 export const promisifyUpload = function(filePath) {
   return new Promise((resolve, reject) => {
     wx.uploadFile({

@@ -113,7 +113,7 @@ export default class SelfInfo extends Component {
             </View>
             <View>
               <Image src={BWHPng} className="icon bwh" />
-              <View>{info.bwh.join('/')}</View>
+              <View>{info.bwh ? info.bwh.join('/') : ''}</View>
             </View>
           </View>
           <View className="middle-line" />
